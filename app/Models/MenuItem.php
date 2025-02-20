@@ -25,4 +25,9 @@ class MenuItem extends Model
         'is_available' => 'boolean',
         'price' => MoneyCast::class
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
