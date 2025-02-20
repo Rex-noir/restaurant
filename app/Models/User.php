@@ -53,4 +53,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasRole('admin') || $this->hasRole('super_admin');
     }
+
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
 }
