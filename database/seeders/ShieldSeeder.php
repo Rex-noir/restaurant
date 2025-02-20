@@ -71,12 +71,12 @@ class ShieldSeeder extends Seeder
         if (File::exists($modelsPath)) {
             foreach (File::files($modelsPath) as $file) {
                 $model = pathinfo($file->getFilename(), PATHINFO_FILENAME);
-                $this->command->info("Found model: {$model}");
+                // $this->command->info("Found model: {$model}");
                 $models[] = strtolower($model); // Convert to lowercase for consistency
             }
         }
 
-        $this->command->info('Found ' . count($models) . ' models.');
+        // $this->command->info('Found ' . count($models) . ' models.');
 
         return $models;
     }
