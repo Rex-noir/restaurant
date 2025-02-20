@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             TableSeeder::class,
             ReservationSeeder::class,
-            OrderSeeder::class
+            OrderSeeder::class,
+            OrderItemSeeder::class
         ]);
     }
 }
