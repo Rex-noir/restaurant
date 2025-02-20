@@ -17,5 +17,7 @@ class RoleSeeder extends Seeder
 
         $role = Role::firstOrCreate(attributes: ['name' => 'admin']);
         $role->syncPermissions(Permission::all());
+
+        $role = Role::firstOrCreate(attributes: ['name' => 'customer']);
     }
 }
