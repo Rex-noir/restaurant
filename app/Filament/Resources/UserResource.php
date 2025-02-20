@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\enums\GenderEnums;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
@@ -42,7 +43,34 @@ class UserResource extends Resource
                     ->minLength(8)
                     ->dehydrateStateUsing(fn($state) => bcrypt($state))
                     ->dehydrated(fn($state) => filled($state))
+                    ->required(fn(string $context): bool => $context === 'create'),
+
+                Forms\Components\TextInput::make('confirm_password')
+                    ->password()
+                    ->minLength(8)
+                    ->same('password')
                     ->required(fn(string $context): bool => $context === 'create')
+                    ->dehydrated(false),
+
+                Forms\Components\Section::make('Profile')
+                    ->relationship('profile')
+                    ->schema([
+                        Forms\Components\Grid::make(2)->schema([
+                            Forms\Components\Select::make('gender')
+                                ->options(GenderEnums::options())
+                                ->native(false)
+                                ->default(GenderEnums::Other->value)
+                                ->selectablePlaceholder(false)
+                                ->required(),
+
+                            Forms\Components\TextInput::make('phone')
+                                ->tel()
+                                ->required(),
+
+                        ]),
+                        Forms\Components\DateTimePicker::make('date_of_birth')
+                            ->native(true)
+                    ])
             ]);
     }
 
