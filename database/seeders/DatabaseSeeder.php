@@ -18,10 +18,6 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             CategorySeeder::class,
-            TableSeeder::class,
-            ReservationSeeder::class,
-            OrderSeeder::class,
-            OrderItemSeeder::class
         ]);
     }
 }
