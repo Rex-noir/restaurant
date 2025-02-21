@@ -11,4 +11,9 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'description', 'image_path'];
+
+    public function menuItems()
+    {
+        return $this->hasMany(MenuItem::class);
+    }
 }
