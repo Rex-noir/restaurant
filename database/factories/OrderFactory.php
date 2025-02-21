@@ -6,6 +6,7 @@ use App\enums\OrderStatusEnum;
 use App\enums\OrderTypesEnum;
 use App\enums\PaymentMethodsEnum;
 use App\enums\PaymentStatusEnum;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +22,7 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => UserFactory::class,
+            'user_id' => User::factory(),
             'order_type' => fake()->randomElement(OrderTypesEnum::values()),
             'status' => fake()->randomElement(OrderStatusEnum::values()),
             'total_amount' => fake()->numberBetween(100, 1000),

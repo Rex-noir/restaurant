@@ -16,8 +16,8 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained()->nullOnDelete();
-            $table->foreignIdFor(Table::class)->constrained()->nullOnDelete();
+            $table->foreignIdFor(User::class)->nullable()->constrained()->nullOnDelete();
+            $table->foreignIdFor(Table::class)->nullable()->constrained()->nullOnDelete();
             $table->integer('party_size');
             $table->enum('status', ReservationStatusEnum::values())->default(ReservationStatusEnum::Pending->value);
             $table->datetime('date');

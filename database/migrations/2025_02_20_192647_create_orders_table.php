@@ -18,7 +18,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained()->nullOnDelete();
+            $table->foreignIdFor(User::class)->nullable()->constrained()->nullOnDelete();
             $table->enum('order_type', OrderTypesEnum::values());
             $table->enum('status', OrderStatusEnum::values())->default(OrderStatusEnum::Pending->value);
             $table->integer('total_amount')->default(0);
