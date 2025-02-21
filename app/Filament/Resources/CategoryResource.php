@@ -4,8 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Filament\Resources\CategoryResource\RelationManagers;
+use App\Filament\Resources\CategoryResource\RelationManagers\MenuItemsRelationManager;
 use App\Models\Category;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -13,6 +17,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Str;
 
 class CategoryResource extends Resource
 {
@@ -24,7 +29,23 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name')
+                    ->required()
+                    ->columnSpanFull(),
+
+                Textarea::make('description')
+                    ->required()
+                    ->columnSpanFull(),
+
+                FileUpload::make('image_path')
+                    ->required()
+                    ->imageEditor()
+                    ->disk('public')
+                    ->previewable()
+                    ->image()
+                    ->directory('images/categories')
+                    ->columnSpanFull(),
+
             ]);
     }
 
@@ -34,6 +55,9 @@ class CategoryResource extends Resource
             ->columns([
                 TextColumn::make("name")
                     ->sortable()
+                    ->description(function ($record) {
+                        return \Illuminate\Support\Str::limit($record->description, 50);
+                    })
                     ->searchable(),
                 TextColumn::make('menu_items_count')
                     ->sortable()
@@ -56,7 +80,7 @@ class CategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            MenuItemsRelationManager::class
         ];
     }
 
