@@ -42,7 +42,7 @@ const user = usePage().props.auth.user;
                         tabindex="0"
                         class="menu menu-sm dropdown-content rounded-box bg-base-100 z-50 mt-3 w-52 p-2 shadow"
                     >
-                        <li><a>Menu Items</a></li>
+                        <li><a>Menu</a></li>
                         <li><a>Reservations</a></li>
                         <li><a>About Us</a></li>
                     </ul>
@@ -56,7 +56,7 @@ const user = usePage().props.auth.user;
 
             <div class="navbar-center hidden lg:flex">
                 <ul class="menu menu-horizontal px-1">
-                    <li><a>Menu Items</a></li>
+                    <li><a>Menu</a></li>
                     <li><a>Reservations</a></li>
                     <li><a>About Us</a></li>
                 </ul>
