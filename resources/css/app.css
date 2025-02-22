@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 
-@plugin "tailwindcss-primeui";
 @plugin '@tailwindcss/forms';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
