@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, usePage } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 
 const user = usePage().props.auth.user;
 </script>
@@ -49,7 +49,7 @@ const user = usePage().props.auth.user;
                 </div>
                 <a class="btn btn-ghost">
                     <span class="text-primary font-serif text-xl font-bold">
-                        The Restaurant Experience
+                        <Link href="/"> The Restaurant Experience</Link>
                     </span>
                 </a>
             </div>
