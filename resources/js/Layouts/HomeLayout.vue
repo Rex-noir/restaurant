@@ -52,7 +52,7 @@ onMounted(() => {
                         <li><a>About Us</a></li>
                     </ul>
                 </div>
-                <a class="btn btn-ghost">
+                <a class="">
                     <span class="text-primary font-serif text-xl font-bold">
                         <a href="/"> The Restaurant Experience</a>
                     </span>
@@ -60,8 +60,14 @@ onMounted(() => {
             </div>
 
             <div class="navbar-center hidden lg:flex">
-                <ul class="menu menu-horizontal px-1">
-                    <li><a :href="route('menus')">Menu</a></li>
+                <ul class="menu menu-horizontal gap-2 px-1">
+                    <li>
+                        <a
+                            :href="route('menus')"
+                            :class="{ 'bg-accent': $page.url === '/menus' }"
+                            >Menu</a
+                        >
+                    </li>
                     <li><a>Reservations</a></li>
                     <li><a>About Us</a></li>
                 </ul>
