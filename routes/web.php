@@ -10,5 +10,8 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', fn() => inertia('Home/HomePage'))->name('home');
+Route::get('/menus', fn() => inertia('Home/MenusPage', [
+    'menus' => []
+]))->name('menus');
 
 require __DIR__ . '/auth.php';
