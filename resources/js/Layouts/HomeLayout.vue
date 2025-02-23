@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import { Head, Link, usePage } from '@inertiajs/vue3';
+import { Head, usePage } from '@inertiajs/vue3';
+import { onMounted } from 'vue';
 
 const user = usePage().props.auth.user;
+
+onMounted(() => {
+    console.log(user);
+});
 </script>
 
 <template>
@@ -49,14 +54,14 @@ const user = usePage().props.auth.user;
                 </div>
                 <a class="btn btn-ghost">
                     <span class="text-primary font-serif text-xl font-bold">
-                        <Link href="/"> The Restaurant Experience</Link>
+                        <a href="/"> The Restaurant Experience</a>
                     </span>
                 </a>
             </div>
 
             <div class="navbar-center hidden lg:flex">
                 <ul class="menu menu-horizontal px-1">
-                    <li><a>Menu</a></li>
+                    <li><a :href="route('menus')">Menu</a></li>
                     <li><a>Reservations</a></li>
                     <li><a>About Us</a></li>
                 </ul>
