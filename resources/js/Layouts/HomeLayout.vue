@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, usePage } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { onMounted } from 'vue';
@@ -75,12 +75,12 @@ onMounted(() => {
                 class="container mx-auto flex items-center justify-between px-4"
             >
                 <!-- Logo - Moved to better position -->
-                <a
+                <Link
                     href="/"
                     class="text-primary hover:text-primary-focus font-serif text-2xl font-bold transition-colors"
                 >
                     The Restaurant Experience
-                </a>
+                </Link>
 
                 <!-- Mobile Menu Button -->
                 <div class="lg:hidden">
@@ -105,13 +105,13 @@ onMounted(() => {
                         class="menu menu-sm dropdown-content rounded-box bg-base-100 absolute right-0 z-50 mt-3 w-52 p-2 shadow"
                     >
                         <li>
-                            <a
+                            <Link
                                 :href="route('menus')"
                                 :class="{
                                     'text-accent font-semibold':
                                         $page.url === '/menus',
                                 }"
-                                >Menu</a
+                                >Menu</Link
                             >
                         </li>
                         <li><a href="/reservations">Reservations</a></li>
@@ -123,7 +123,7 @@ onMounted(() => {
                 <div class="hidden items-center space-x-8 lg:flex">
                     <ul class="flex space-x-6">
                         <li>
-                            <a
+                            <Link
                                 :href="route('menus')"
                                 :class="{
                                     'text-accent border-accent border-b-2 pb-1 font-semibold':
@@ -132,7 +132,7 @@ onMounted(() => {
                                 class="text-base-content hover:text-primary transition-colors"
                             >
                                 Menu
-                            </a>
+                            </Link>
                         </li>
                         <li>
                             <a
