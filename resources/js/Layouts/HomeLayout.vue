@@ -1,7 +1,63 @@
 <script setup lang="ts">
 import { Head, usePage } from '@inertiajs/vue3';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+import { onMounted } from 'vue';
+
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
 
 const user = usePage().props.auth.user;
+
+onMounted(() => {
+    // Navbar Animation
+    gsap.from('.navbar', {
+        y: -50,
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.out',
+    });
+
+    // Footer Animation - Fixed to ensure it shows up
+    const footerTimeline = gsap.timeline({
+        scrollTrigger: {
+            trigger: 'footer',
+            start: 'top bottom', // Trigger when footer enters viewport
+            toggleActions: 'play none none none',
+            once: true, // Only trigger once
+        },
+    });
+
+    footerTimeline
+        .from('.footer-links a', {
+            y: 20,
+            opacity: 0,
+            duration: 0.6,
+            ease: 'power2.out',
+            stagger: 0.1,
+        })
+        .from(
+            '.social-icons a',
+            {
+                scale: 0.5,
+                opacity: 0,
+                duration: 0.4,
+                ease: 'back.out(1.7)',
+                stagger: 0.1,
+            },
+            '-=0.3',
+        )
+        .from(
+            '.copyright',
+            {
+                y: 20,
+                opacity: 0,
+                duration: 0.6,
+                ease: 'power2.out',
+            },
+            '-=0.2',
+        );
+});
 </script>
 
 <template>
@@ -12,20 +68,26 @@ const user = usePage().props.auth.user;
             content="A cozy haven where flavor meets tradition since 2003"
         />
     </Head>
-
     <div class="flex min-h-screen flex-col">
-        <!-- Navigation -->
-        <nav class="navbar bg-base-300 border-base-200 border-b">
-            <div class="navbar-start">
-                <div class="dropdown">
-                    <div
-                        tabindex="0"
-                        role="button"
-                        class="btn btn-ghost lg:hidden"
-                    >
+        <!-- Improved Navigation -->
+        <nav class="navbar bg-base-200 border-base-300 border-b py-3 shadow-sm">
+            <div
+                class="container mx-auto flex items-center justify-between px-4"
+            >
+                <!-- Logo - Moved to better position -->
+                <a
+                    href="/"
+                    class="text-primary hover:text-primary-focus font-serif text-2xl font-bold transition-colors"
+                >
+                    The Restaurant Experience
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <div class="lg:hidden">
+                    <div tabindex="0" role="button" class="btn btn-ghost">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            class="h-5 w-5"
+                            class="h-6 w-6"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -40,103 +102,184 @@ const user = usePage().props.auth.user;
                     </div>
                     <ul
                         tabindex="0"
-                        class="menu menu-sm dropdown-content rounded-box bg-base-100 z-50 mt-3 w-52 p-2 shadow"
+                        class="menu menu-sm dropdown-content rounded-box bg-base-100 absolute right-0 z-50 mt-3 w-52 p-2 shadow"
                     >
-                        <li><a>Menu</a></li>
-                        <li><a>Reservations</a></li>
-                        <li><a>About Us</a></li>
+                        <li>
+                            <a
+                                :href="route('menus')"
+                                :class="{
+                                    'text-accent font-semibold':
+                                        $page.url === '/menus',
+                                }"
+                                >Menu</a
+                            >
+                        </li>
+                        <li><a href="/reservations">Reservations</a></li>
+                        <li><a href="/about">About Us</a></li>
                     </ul>
                 </div>
-                <a class="">
-                    <span class="text-primary font-serif text-xl font-bold">
-                        <a href="/"> The Restaurant Experience</a>
-                    </span>
-                </a>
-            </div>
 
-            <div class="navbar-center hidden lg:flex">
-                <ul class="menu menu-horizontal gap-2 px-1">
-                    <li>
+                <!-- Desktop Menu -->
+                <div class="hidden items-center space-x-8 lg:flex">
+                    <ul class="flex space-x-6">
+                        <li>
+                            <a
+                                :href="route('menus')"
+                                :class="{
+                                    'text-accent border-accent border-b-2 pb-1 font-semibold':
+                                        $page.url === '/menus',
+                                }"
+                                class="text-base-content hover:text-primary transition-colors"
+                            >
+                                Menu
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/reservations"
+                                class="text-base-content hover:text-primary transition-colors"
+                            >
+                                Reservations
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/about"
+                                class="text-base-content hover:text-primary transition-colors"
+                            >
+                                About Us
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div>
                         <a
-                            :href="route('menus')"
-                            :class="{ 'bg-accent': $page.url === '/menus' }"
-                            >Menu</a
+                            v-if="user"
+                            href="/reservations"
+                            class="btn btn-primary"
+                            >Book a Table</a
                         >
-                    </li>
-                    <li><a>Reservations</a></li>
-                    <li><a>About Us</a></li>
-                </ul>
-            </div>
-
-            <div class="navbar-end">
-                <a v-if="user" class="btn btn-primary">Book a Table</a>
-                <a v-else class="btn btn-sm btn-primary">Login / Signup</a>
+                        <a v-else href="/login" class="btn btn-primary"
+                            >Login / Signup</a
+                        >
+                    </div>
+                </div>
             </div>
         </nav>
 
         <!-- Main Content -->
-        <main class="flex-grow">
+        <main class="bg-neutral flex-grow">
             <slot />
         </main>
 
-        <footer
-            class="footer footer-center bg-base-200 text-base-content rounded p-10"
-        >
-            <nav class="grid grid-flow-col gap-4">
-                <a class="link link-hover">About us</a>
-                <a class="link link-hover">Contact</a>
-                <a class="link link-hover">Jobs</a>
-                <a class="link link-hover">Press kit</a>
-            </nav>
-            <nav>
-                <div class="grid grid-flow-col gap-4">
-                    <a>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            class="fill-current"
-                        >
-                            <path
-                                d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"
-                            ></path>
-                        </svg>
-                    </a>
-                    <a>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            class="fill-current"
-                        >
-                            <path
-                                d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"
-                            ></path>
-                        </svg>
-                    </a>
-                    <a>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            class="fill-current"
-                        >
-                            <path
-                                d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"
-                            ></path>
-                        </svg>
-                    </a>
+        <!-- Improved Footer -->
+        <footer class="bg-base-200 border-base-300 border-t py-10">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+                    <!-- Links Section -->
+                    <div
+                        class="footer-links flex flex-col items-center space-y-3 md:items-start"
+                    >
+                        <h3 class="mb-2 text-lg font-bold">Explore</h3>
+                        <a href="/about" class="link link-hover">About Us</a>
+                        <a href="/contact" class="link link-hover">Contact</a>
+                        <a href="/careers" class="link link-hover">Careers</a>
+                        <a href="/press" class="link link-hover">Press Kit</a>
+                    </div>
+
+                    <!-- Hours & Location -->
+                    <div class="text-center md:text-left">
+                        <h3 class="mb-4 text-lg font-bold">Hours & Location</h3>
+                        <p class="mb-2">123 Gourmet Street</p>
+                        <p class="mb-2">Foodville, FC 12345</p>
+                        <p class="mb-4">Phone: (555) 123-4567</p>
+                        <p class="font-medium">Mon-Fri: 11am-10pm</p>
+                        <p class="font-medium">Sat-Sun: 9am-11pm</p>
+                    </div>
+
+                    <!-- Social & Newsletter -->
+                    <div class="flex flex-col items-center md:items-end">
+                        <h3 class="mb-4 text-lg font-bold">Connect With Us</h3>
+                        <div class="social-icons mb-6 flex gap-4">
+                            <a
+                                href="#"
+                                class="hover:text-primary transition-colors"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    class="fill-current"
+                                >
+                                    <path
+                                        d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"
+                                    ></path>
+                                </svg>
+                            </a>
+                            <a
+                                href="#"
+                                class="hover:text-primary transition-colors"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    class="fill-current"
+                                >
+                                    <path
+                                        d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"
+                                    ></path>
+                                </svg>
+                            </a>
+                            <a
+                                href="#"
+                                class="hover:text-primary transition-colors"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    class="fill-current"
+                                >
+                                    <path
+                                        d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"
+                                    ></path>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="w-full max-w-xs">
+                            <label class="label">
+                                <span class="label-text"
+                                    >Subscribe to our newsletter</span
+                                >
+                            </label>
+                            <div class="join">
+                                <input
+                                    type="email"
+                                    placeholder="Your email"
+                                    class="input input-bordered join-item w-full"
+                                />
+                                <button class="btn btn-primary join-item">
+                                    Subscribe
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </nav>
-            <aside>
-                <p>
-                    Copyright © {{ new Date().getFullYear() }} - All right
-                    reserved by The Restaurant Experience Ltd
-                </p>
-            </aside>
+
+                <!-- Copyright -->
+                <div
+                    class="copyright border-base-300 mt-10 border-t pt-6 text-center"
+                >
+                    <p>
+                        Copyright © {{ new Date().getFullYear() }} - All rights
+                        reserved by The Restaurant Experience Ltd
+                    </p>
+                </div>
+            </div>
         </footer>
     </div>
 </template>
