@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import { Head, usePage } from '@inertiajs/vue3';
-import { onMounted } from 'vue';
 
 const user = usePage().props.auth.user;
-
-onMounted(() => {
-    console.log(user);
-});
 </script>
 
 <template>
