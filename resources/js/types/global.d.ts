@@ -1,11 +1,13 @@
 import { PageProps as InertiaPageProps } from '@inertiajs/core';
 import { AxiosInstance } from 'axios';
+import gsap from 'gsap';
 import { route as ziggyRoute } from 'ziggy-js';
 import { PageProps as AppPageProps } from './';
 
 declare global {
     interface Window {
         axios: AxiosInstance;
+        gsap: typeof gsap;
     }
 
     /* eslint-disable no-var */
