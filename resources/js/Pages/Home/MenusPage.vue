@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import HomeLayout from '@/Layouts/HomeLayout.vue';
+import { PageProps } from '@/types';
+import { usePage } from '@inertiajs/vue3';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { nextTick, onMounted, ref } from 'vue';
+
+const page = usePage<PageProps<{ categories: App.Data.CategoryData[] }>>();
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
