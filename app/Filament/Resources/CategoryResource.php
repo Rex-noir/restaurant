@@ -34,11 +34,9 @@ class CategoryResource extends Resource
                     ->columnSpanFull(),
 
                 Textarea::make('description')
-                    ->required()
                     ->columnSpanFull(),
 
                 FileUpload::make('image_path')
-                    ->required()
                     ->imageEditor()
                     ->disk('public')
                     ->previewable()
