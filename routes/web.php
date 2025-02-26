@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Resources\CategoryResource;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 
 // Route::middleware('auth')->group(function () {
@@ -11,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => inertia('Home/HomePage'))->name('home');
 Route::get('/menus', fn() => inertia('Home/MenusPage', [
-    'menus' => []
+    'categories' => CategoryResource::collection(Category::all()),
 ]))->name('menus');
 
 require __DIR__ . '/auth.php';
