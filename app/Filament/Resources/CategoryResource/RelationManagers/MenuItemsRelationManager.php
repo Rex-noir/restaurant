@@ -34,7 +34,6 @@ class MenuItemsRelationManager extends RelationManager
                     ->prefix('$'),
 
                 Forms\Components\TextInput::make('preparation_time')
-                    ->required()
                     ->numeric()
                     ->prefix('min'),
 
