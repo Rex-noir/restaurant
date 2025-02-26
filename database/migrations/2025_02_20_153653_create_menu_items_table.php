@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('price');
             $table->string('image_path')->nullable();
             $table->boolean('is_available')->default(true);
-            $table->integer('preparation_time');
+            $table->integer('preparation_time')->nullable();
             $table->timestamps();
         });
     }
