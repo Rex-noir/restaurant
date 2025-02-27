@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => inertia('Home/HomePage'))->name('home');
 Route::get('/menus', function () {
-    $categories = Category::with('menuItems')->get();
+    $categories = Category::with('menuItems.tags')->get();
     return inertia('Home/MenusPage', [
         'categories' => CategoryData::collect($categories)
     ]);
