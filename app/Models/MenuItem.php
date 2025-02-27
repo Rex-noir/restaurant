@@ -6,11 +6,12 @@ use App\Casts\MoneyCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Tags\HasTags;
 
 class MenuItem extends Model
 {
     /** @use HasFactory<\Database\Factories\MenuItemFactory> */
-    use HasFactory;
+    use HasFactory, HasTags;
 
     protected $fillable = [
         'category_id',
