@@ -10,6 +10,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Spatie\Tags\Tag;
 
 class MenuItemsRelationManager extends RelationManager
 {
@@ -47,7 +48,8 @@ class MenuItemsRelationManager extends RelationManager
 
                 SpatieTagsInput::make('tags')
                     ->type('menu_item_tags')
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->suggestions(Tag::query()->where('type', '=', 'menu_item_tags')->pluck('name')->toArray()),
 
                 Forms\Components\Toggle::make('is_available')
                     ->required(),
