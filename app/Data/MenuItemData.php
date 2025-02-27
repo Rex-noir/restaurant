@@ -15,5 +15,7 @@ class MenuItemData extends Data
         #[MapOutputName('image')]
         public ?string $imagePath,
         public bool $isAvailable,
+        /** @var array<TagData> */
+        public array $tags,
     ) {}
 }
