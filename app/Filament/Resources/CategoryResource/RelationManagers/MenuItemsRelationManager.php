@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\CategoryResource\RelationManagers;
 
 use Filament\Forms;
+use Filament\Forms\Components\SpatieTagsInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -44,8 +45,13 @@ class MenuItemsRelationManager extends RelationManager
                     ->previewable()
                     ->imageEditor(),
 
+                SpatieTagsInput::make('tags')
+                    ->type('menu_item_tags')
+                    ->columnSpanFull(),
+
                 Forms\Components\Toggle::make('is_available')
                     ->required(),
+
 
             ]);
     }

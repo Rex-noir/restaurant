@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Tags\HasTags;
+use Spatie\Tags\Tag;
 
 class MenuItem extends Model
 {
