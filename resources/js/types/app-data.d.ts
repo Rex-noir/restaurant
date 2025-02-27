@@ -11,7 +11,7 @@ declare namespace App.Data {
         price: number;
         image: string | null;
         is_available: boolean;
-        tags: Array<App.Data.TagData>;
+        tags: Array<App.Data.TagData> | null;
     };
     export type TagData = {
         name: string;
