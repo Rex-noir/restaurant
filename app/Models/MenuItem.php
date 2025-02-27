@@ -32,11 +32,6 @@ class MenuItem extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class, 'menu_item_tag');
-    }
-
     public static function boot()
     {
         parent::boot();
