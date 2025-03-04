@@ -13,7 +13,7 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
-        $categories =  Category::all();
+        $categories = Category::all();
 
         $menuItemsQuery = MenuItem::query();
 
@@ -25,7 +25,7 @@ class CategoryController extends Controller
 
         return inertia('Home/MenusPage', [
             'categories' => CategoryData::collect($categories),
-            'menuItems' => MenuItemData::collect($menuItems, PaginatedDataCollection::class)->wrap('paginated_data'),
+            'menuItems' => MenuItemData::collect($menuItems, PaginatedDataCollection::class)
         ]);
     }
 }
