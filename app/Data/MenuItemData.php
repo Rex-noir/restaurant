@@ -21,6 +21,5 @@ class MenuItemData extends Data
         /** @var array<TagData> */
         public ?array $tags,
     ) {
-        info($this->imagePath);
     }
 }
