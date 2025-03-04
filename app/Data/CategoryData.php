@@ -2,6 +2,7 @@
 
 namespace App\Data;
 
+use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Data;
 
@@ -13,7 +14,6 @@ class CategoryData extends Data
         public ?string $description,
         #[MapOutputName('image')]
         public ?string $imagePath,
-        /** @var array<MenuItemData> */
-        public ?array $menuItems,
-    ) {}
+    ) {
+    }
 }
