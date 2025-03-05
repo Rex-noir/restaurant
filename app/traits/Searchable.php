@@ -14,7 +14,7 @@ trait Searchable
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function scopeSearch($query)
+    public function scopeSearch($query)
     {
 
         [$searchTerm, $attributes] = $this->parseArguments(func_get_args());
