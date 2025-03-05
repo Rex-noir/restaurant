@@ -15,7 +15,7 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
 
-        $menuItemsQuery = MenuItem::query();
+        $menuItemsQuery = MenuItem::query()->with('tags');
 
         if ($request->query('category')) {
             $menuItemsQuery->whereRelation('category', 'name', '=', $request->query('category'));
