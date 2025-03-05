@@ -66,32 +66,12 @@ trait Searchable
         $args_count = count($arguments);
 
 
-        switch ($args_count) {
-
-            case 1:
-
-                return [request('search'), $this->searchableAttributes()];
-
-            case 2:
-
-                return is_string($arguments[1])
-
-                    ? [$arguments[1], $this->searchableAttributes()]
-
-                    : [request('search'), $arguments[1]];
-
-            case 3:
-
-                return is_string($arguments[1])
-
-                    ? [$arguments[1], $arguments[2]]
-
-                    : [$arguments[2], $arguments[1]];
-
-            default:
-                return [null, []];
-
-        }
+        return match ($args_count) {
+            1 => [request('search'), $this->searchableAttributes()],
+            2 => is_string($arguments[1]) ? [$arguments[1], $this->searchableAttributes()] : [request('search'), $arguments[1]],
+            3 => is_string($arguments[1]) ? [$arguments[1], $arguments[2]] : [$arguments[2], $arguments[1]],
+            default => [null, []],
+        };
     }
 
     /**
