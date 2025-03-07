@@ -3,16 +3,16 @@
 namespace App\Models;
 
 use App\Casts\MoneyCast;
+use App\traits\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Tags\HasTags;
-use Spatie\Tags\Tag;
 
 class MenuItem extends Model
 {
     /** @use HasFactory<\Database\Factories\MenuItemFactory> */
-    use HasFactory, HasTags;
+    use HasFactory, HasTags, Searchable;
 
     protected $fillable = [
         'category_id',
