@@ -73,6 +73,8 @@ watch(currentPage, () => {
 
 const paginatedMenu = computed(() => page.props.menuItems);
 
+console.log(paginatedMenu.value);
+
 // Pagination helpers
 const goToPage = (page: number) => {
     currentPage.value = page;
@@ -340,38 +342,39 @@ onMounted(() => {
             <!-- Pagination Component (DaisyUI) -->
             <div
                 class="mt-12 flex justify-center"
-                v-if="paginatedMenu.last_page > 1"
+                v-if="paginatedMenu.meta.last_page > 1"
             >
                 <div class="join">
                     <!-- Previous page button -->
                     <button
                         class="join-item btn"
                         :class="{
-                            'btn-disabled': paginatedMenu.current_page === 1,
+                            'btn-disabled':
+                                paginatedMenu.meta.current_page === 1,
                         }"
-                        @click="goToPage(paginatedMenu.current_page - 1)"
-                        :disabled="paginatedMenu.current_page === 1"
+                        @click="goToPage(paginatedMenu.meta.current_page - 1)"
+                        :disabled="paginatedMenu.meta.current_page === 1"
                     >
                         «
                     </button>
 
                     <!-- Page numbers -->
                     <template
-                        v-for="page in paginatedMenu.last_page"
+                        v-for="page in paginatedMenu.meta.last_page"
                         :key="page"
                     >
                         <!-- Show first page, current page, last page, and pages adjacent to current -->
                         <button
                             v-if="
                                 page === 1 ||
-                                page === paginatedMenu.last_page ||
-                                (page >= paginatedMenu.current_page - 1 &&
-                                    page <= paginatedMenu.current_page + 1)
+                                page === paginatedMenu.meta.last_page ||
+                                (page >= paginatedMenu.meta.current_page - 1 &&
+                                    page <= paginatedMenu.meta.current_page + 1)
                             "
                             class="join-item btn"
                             :class="{
                                 'btn-active':
-                                    page === paginatedMenu.current_page,
+                                    page === paginatedMenu.meta.current_page,
                             }"
                             @click="goToPage(page)"
                         >
@@ -382,10 +385,10 @@ onMounted(() => {
                         <button
                             v-else-if="
                                 (page === 2 &&
-                                    paginatedMenu.current_page > 3) ||
-                                (page === paginatedMenu.last_page - 1 &&
-                                    paginatedMenu.current_page <
-                                        paginatedMenu.last_page - 2)
+                                    paginatedMenu.meta.current_page > 3) ||
+                                (page === paginatedMenu.meta.last_page - 1 &&
+                                    paginatedMenu.meta.current_page <
+                                        paginatedMenu.meta.last_page - 2)
                             "
                             class="join-item btn btn-disabled"
                         >
@@ -398,13 +401,13 @@ onMounted(() => {
                         class="join-item btn"
                         :class="{
                             'btn-disabled':
-                                paginatedMenu.current_page ===
-                                paginatedMenu.last_page,
+                                paginatedMenu.meta.current_page ===
+                                paginatedMenu.meta.last_page,
                         }"
-                        @click="goToPage(paginatedMenu.current_page + 1)"
+                        @click="goToPage(paginatedMenu.meta.current_page + 1)"
                         :disabled="
-                            paginatedMenu.current_page ===
-                            paginatedMenu.last_page
+                            paginatedMenu.meta.current_page ===
+                            paginatedMenu.meta.last_page
                         "
                     >
                         »
