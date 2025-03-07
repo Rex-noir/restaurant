@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 // });
 
-Route::get('/', fn() => inertia('Home/HomePage'))->name('home');
-Route::get('/menus', [CategoryController::class, 'index'])->name('menus');
+Route::get('/', fn () => inertia('Home/HomePage'))->name('home');
+Route::get('/menus', [CategoryController::class, 'index'])->name('home.menus');
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
