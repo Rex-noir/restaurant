@@ -23,7 +23,7 @@ class CategoryController extends Controller
             $menuItemsQuery->whereRelation('category', 'name', '=', $request->query('category'));
         }
 
-        $menuItems = $menuItemsQuery->paginate($request->query('per_page', 10));
+        $menuItems = $menuItemsQuery->paginate($request->query('per_page', 20));
 
         return inertia('Home/MenusPage', [
             'categories' => fn () => CategoryData::collect($categories),
