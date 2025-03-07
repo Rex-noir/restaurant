@@ -25,7 +25,7 @@ defineOptions({
 const headerRef = ref(null);
 const searchRef = ref(null);
 const menuItemsRef = ref(null);
-
+const searching = ref(false);
 // Get initial values from URL
 const urlParams = new URLSearchParams(window.location.search);
 const searchQuery = ref(urlParams.get('search') || '');
@@ -52,13 +52,19 @@ const fetchMenuItems = (resetPage = false) => {
         {},
         { preserveScroll: true, only: ['menuItems'], preserveState: true },
     );
+
+    searching.value = false;
 };
 
-// Watch for search query changes and reset to page 1
-watch(
-    searchQuery,
-    debounce({ delay: 1000 }, () => fetchMenuItems(true)),
+const debounceFeatchItems = debounce({ delay: 1000 }, () =>
+    fetchMenuItems(true),
 );
+
+// Watch for search query changes and reset to page 1
+watch(searchQuery, () => {
+    searching.value = true;
+    debounceFeatchItems();
+});
 
 // Watch for page changes
 watch(currentPage, () => {
@@ -107,7 +113,6 @@ onMounted(() => {
         duration: 0.1,
         ease: 'power3.out',
     });
-
     // Search bar animation
     mainTimeline.from(
         searchRef.value,
@@ -224,14 +229,19 @@ onMounted(() => {
                     </p>
                 </div>
                 <div ref="searchRef" class="w-full md:w-auto">
-                    <div class="relative">
+                    <label class="input input-ghost">
                         <input
                             v-model="searchQuery"
                             type="text"
-                            class="input input-bordered bg-base-200/50 border-base-300 focus:border-primary placeholder:text-base-content/50 w-full pr-10 transition-all duration-300 md:w-64"
+                            class="grow ring-0"
                             placeholder="Search our menu..."
                         />
+                        <span
+                            v-if="searching"
+                            class="loading loading-ring loading-xs absolute top-1/2 right-3 -translate-y-1/2"
+                        ></span>
                         <svg
+                            v-else
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 16 16"
                             fill="currentColor"
@@ -243,7 +253,7 @@ onMounted(() => {
                                 clip-rule="evenodd"
                             />
                         </svg>
-                    </div>
+                    </label>
                 </div>
             </div>
 
