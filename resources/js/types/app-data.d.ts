@@ -3,14 +3,13 @@ declare namespace App.Data {
         name: string;
         description: string | null;
         image: string | null;
-        menu_items: Array<App.Data.MenuItemData> | null;
     };
     export type MenuItemData = {
         name: string;
         description: string | null;
         price: number;
         image: string | null;
-        is_available: boolean;
+        isAvailable: boolean;
         tags: Array<App.Data.TagData> | null;
     };
     export type TagData = {
