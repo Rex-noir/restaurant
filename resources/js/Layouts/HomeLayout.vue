@@ -106,7 +106,7 @@ onMounted(() => {
                     >
                         <li>
                             <Link
-                                :href="route('menus')"
+                                :href="route('home.menus')"
                                 :class="{
                                     'text-accent font-semibold':
                                         $page.url === '/menus',
@@ -124,7 +124,7 @@ onMounted(() => {
                     <ul class="flex space-x-6">
                         <li>
                             <Link
-                                :href="route('menus')"
+                                :href="route('home.menus')"
                                 :class="{
                                     'text-accent border-accent border-b-2 pb-1 font-semibold':
                                         $page.url === '/menus',
