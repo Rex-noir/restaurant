@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import HomeLayout from '@/Layouts/HomeLayout.vue';
-import { PageProps } from '@/types';
-import { usePage } from '@inertiajs/vue3';
+import { PageProps, PaginatedResponse } from '@/types';
+import { router, usePage } from '@inertiajs/vue3';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import { nextTick, onMounted, ref } from 'vue';
+import { debounce } from 'radash';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 
-const page = usePage<PageProps<{ categories: App.Data.CategoryData[] }>>();
+const page = usePage<
+    PageProps<{
+        categories: App.Data.CategoryData[];
+        menuItems: PaginatedResponse<App.Data.MenuItemData>;
+    }>
+>();
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -20,74 +26,75 @@ const headerRef = ref(null);
 const searchRef = ref(null);
 const menuItemsRef = ref(null);
 
-// Menu data
-const menuItems = [
-    {
-        id: 1,
-        name: 'Clam Dip',
-        description:
-            'Clam dip is one of those old-timey New England dishes that is popular up and down the coast, often made for family gatherings like barbecues or holidays.',
-        image: 'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2022/10/24/FNK_CLAM_DIP_H_f.jpg.rend.hgtvcom.791.633.85.suffix/1666710963839.webp',
-        price: '$12.00',
-        tags: ['Appetizer', 'Seafood'],
-    },
-    {
-        id: 2,
-        name: 'Wild Mushroom Risotto',
-        description:
-            'Creamy arborio rice slow-cooked with a medley of wild mushrooms, finished with truffle oil and aged parmesan.',
-        image: 'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2022/10/24/FNK_CLAM_DIP_H_f.jpg.rend.hgtvcom.791.633.85.suffix/1666710963839.webp',
-        price: '$18.50',
-        tags: ['Main', 'Vegetarian'],
-    },
-    {
-        id: 3,
-        name: 'Seared Scallops',
-        description:
-            'Pan-seared scallops with cauliflower puree, crispy pancetta, and micro greens drizzled with brown butter sauce.',
-        image: 'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2022/10/24/FNK_CLAM_DIP_H_f.jpg.rend.hgtvcom.791.633.85.suffix/1666710963839.webp',
-        price: '$23.00',
-        tags: ['Seafood', 'Gluten-Free'],
-    },
-    {
-        id: 4,
-        name: 'Braised Short Ribs',
-        description:
-            'Slow-braised beef short ribs with red wine reduction, served with creamy polenta and roasted seasonal vegetables.',
-        image: 'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2022/10/24/FNK_CLAM_DIP_H_f.jpg.rend.hgtvcom.791.633.85.suffix/1666710963839.webp',
-        price: '$28.00',
-        tags: ['Main', 'Signature'],
-    },
-    {
-        id: 5,
-        name: 'Tiramisu',
-        description:
-            'Classic Italian dessert with layers of coffee-soaked ladyfingers and mascarpone cream, dusted with cocoa powder.',
-        image: 'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2022/10/24/FNK_CLAM_DIP_H_f.jpg.rend.hgtvcom.791.633.85.suffix/1666710963839.webp',
-        price: '$10.00',
-        tags: ['Dessert', 'Sweet'],
-    },
-];
+// Get initial values from URL
+const urlParams = new URLSearchParams(window.location.search);
+const searchQuery = ref(urlParams.get('search') || '');
+const currentPage = ref(parseInt(urlParams.get('page') || '1'));
 
-// Filter state
-const searchQuery = ref('');
-const filteredItems = ref(menuItems);
+// Get category directly from URL each time
+const getSelectedCategory = () => {
+    return new URLSearchParams(window.location.search).get('category') || '';
+};
 
-// Filter function
-const filterMenu = () => {
-    if (!searchQuery.value) {
-        filteredItems.value = menuItems;
-        return;
+// Fetch menu items with current filters
+const fetchMenuItems = (resetPage = false) => {
+    const params: any = {
+        category: getSelectedCategory(),
+        page: resetPage ? 1 : currentPage.value,
+    };
+
+    if (searchQuery.value.trim()) {
+        params['search'] = searchQuery.value;
     }
 
-    const query = searchQuery.value.toLowerCase();
-    filteredItems.value = menuItems.filter(
-        (item) =>
-            item.name.toLowerCase().includes(query) ||
-            item.description.toLowerCase().includes(query) ||
-            item.tags.some((tag) => tag.toLowerCase().includes(query)),
+    router.get(
+        route('home.menus', params),
+        {},
+        { preserveScroll: true, only: ['menuItems'], preserveState: true },
     );
 };
+
+// Watch for search query changes and reset to page 1
+watch(
+    searchQuery,
+    debounce({ delay: 1000 }, () => fetchMenuItems(true)),
+);
+
+// Watch for page changes
+watch(currentPage, () => {
+    fetchMenuItems(false);
+});
+
+const paginatedMenu = computed(() => page.props.menuItems);
+
+// Pagination helpers
+const goToPage = (page: number) => {
+    currentPage.value = page;
+};
+
+// Helper to update category in URL
+const updateCategory = (category: string) => {
+    const params: any = {
+        category: category,
+        page: 1, // Reset to page 1 when changing category
+    };
+    if (searchQuery.value.trim()) {
+        params['search'] = searchQuery.value;
+    }
+
+    router.get(
+        route('home.menus', params),
+        {},
+        { preserveScroll: true, preserveState: true, showProgress: true },
+    );
+};
+
+const resetFilters = () => {
+    searchQuery.value = '';
+    updateCategory('');
+};
+
+const hasItems = computed(() => paginatedMenu.value.data.length > 0);
 
 onMounted(() => {
     // Initial animations when page loads
@@ -97,7 +104,7 @@ onMounted(() => {
     mainTimeline.from(headerRef.value, {
         y: -20,
         opacity: 0,
-        duration: 0.8,
+        duration: 0.1,
         ease: 'power3.out',
     });
 
@@ -113,80 +120,84 @@ onMounted(() => {
         '-=0.4',
     );
 
-    // Menu cards staggered animation
-    nextTick(() => {
-        mainTimeline.from(
-            '.menu-card',
-            {
-                y: 30,
-                opacity: 0,
-                duration: 0.7,
-                stagger: 0.1,
-                ease: 'power2.out',
+    // Only apply menu card animations if items exist
+    if (hasItems.value) {
+        // Menu cards staggered animation
+        nextTick(() => {
+            mainTimeline.from(
+                '.menu-card',
+                {
+                    y: 30,
+                    opacity: 0,
+                    duration: 0.7,
+                    stagger: 0.1,
+                    ease: 'power2.out',
+                },
+                '-=0.2',
+            );
+        });
+
+        // Scroll animations for cards that come into view later
+        gsap.from('.card-image', {
+            scale: 1.05,
+            opacity: 0.8,
+            duration: 0.8,
+            ease: 'power1.out',
+            scrollTrigger: {
+                trigger: menuItemsRef.value,
+                start: 'top 80%',
+                toggleActions: 'play none none none',
+                once: true,
             },
-            '-=0.2',
-        );
-    });
-    // Scroll animations for cards that come into view later
-    gsap.from('.card-image', {
-        scale: 1.05,
-        opacity: 0.8,
-        duration: 0.8,
-        ease: 'power1.out',
-        scrollTrigger: {
-            trigger: menuItemsRef.value,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-            once: true,
-        },
-    });
-
-    // Badge animation on scroll
-    gsap.from('.badge', {
-        scale: 0.8,
-        opacity: 0,
-        duration: 0.4,
-        stagger: 0.05,
-        ease: 'back.out(1.7)',
-        scrollTrigger: {
-            trigger: menuItemsRef.value,
-            start: 'top 70%',
-            toggleActions: 'play none none none',
-            once: true,
-        },
-    });
-
-    // Card hover animations
-    const cards = document.querySelectorAll('.menu-card');
-    cards.forEach((card) => {
-        card.addEventListener('mouseenter', () => {
-            gsap.to(card.querySelector('.card-image'), {
-                scale: 1.05,
-                duration: 0.4,
-                ease: 'power1.out',
-            });
-
-            gsap.to(card.querySelector('.card-body'), {
-                y: -5,
-                duration: 0.3,
-                ease: 'power1.out',
-            });
         });
 
-        card.addEventListener('mouseleave', () => {
-            gsap.to(card.querySelector('.card-image'), {
-                scale: 1,
-                duration: 0.4,
-                ease: 'power1.out',
+        // Badge animation on scroll
+        gsap.from('.badge', {
+            scale: 0.8,
+            opacity: 0,
+            duration: 0.4,
+            stagger: 0.05,
+            ease: 'back.out(1.7)',
+            scrollTrigger: {
+                trigger: menuItemsRef.value,
+                start: 'top 70%',
+                toggleActions: 'play none none none',
+                once: true,
+            },
+        });
+
+        // Card hover animations
+        const cards = document.querySelectorAll('.menu-card');
+        cards.forEach((card) => {
+            card.addEventListener('mouseenter', () => {
+                gsap.to(card.querySelector('.card-image'), {
+                    scale: 1.05,
+                    duration: 0.4,
+                    ease: 'power1.out',
+                });
+
+                gsap.to(card.querySelector('.card-body'), {
+                    y: -5,
+                    duration: 0.3,
+                    ease: 'power1.out',
+                });
             });
 
-            gsap.to(card.querySelector('.card-body'), {
-                y: 0,
-                duration: 0.3,
-                ease: 'power1.out',
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card.querySelector('.card-image'), {
+                    scale: 1,
+                    duration: 0.4,
+                    ease: 'power1.out',
+                });
+
+                gsap.to(card.querySelector('.card-body'), {
+                    y: 0,
+                    duration: 0.3,
+                    ease: 'power1.out',
+                });
             });
         });
-    });
+    }
 });
 </script>
 
@@ -216,7 +227,6 @@ onMounted(() => {
                     <div class="relative">
                         <input
                             v-model="searchQuery"
-                            @input="filterMenu"
                             type="text"
                             class="input input-bordered bg-base-200/50 border-base-300 focus:border-primary placeholder:text-base-content/50 w-full pr-10 transition-all duration-300 md:w-64"
                             placeholder="Search our menu..."
@@ -239,18 +249,24 @@ onMounted(() => {
 
             <!-- Subtle Category Navigation -->
             <div class="mb-8 flex flex-wrap gap-2">
-                <button class="btn btn-sm btn-primary">All Items</button>
-                <button class="btn btn-sm btn-ghost hover:bg-base-200">
-                    Appetizers
+                <button
+                    @click="updateCategory('')"
+                    class="btn btn-sm"
+                    :class="{ 'btn-primary': getSelectedCategory() === '' }"
+                >
+                    All
                 </button>
-                <button class="btn btn-sm btn-ghost hover:bg-base-200">
-                    Main Courses
-                </button>
-                <button class="btn btn-sm btn-ghost hover:bg-base-200">
-                    Seafood
-                </button>
-                <button class="btn btn-sm btn-ghost hover:bg-base-200">
-                    Desserts
+                <button
+                    v-for="category in page.props.categories"
+                    :key="category.name"
+                    @click="updateCategory(category.name)"
+                    class="btn btn-sm"
+                    :class="{
+                        'btn-primary!': getSelectedCategory() === category.name,
+                        'btn-ghost': getSelectedCategory() !== category.name,
+                    }"
+                >
+                    {{ category.name }}
                 </button>
             </div>
 
@@ -258,24 +274,25 @@ onMounted(() => {
             <div
                 ref="menuItemsRef"
                 class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
+                v-if="hasItems"
             >
                 <!-- Menu Card with Modern Design -->
                 <div
-                    v-for="item in filteredItems"
-                    :key="item.id"
+                    v-for="item in paginatedMenu.data"
+                    :key="item.name"
                     class="menu-card card bg-base-100 border-base-200 overflow-hidden border shadow-md hover:shadow-lg"
                 >
                     <!-- Image Container with Fixed Aspect Ratio -->
                     <figure class="relative overflow-hidden pt-[66%]">
                         <img
-                            :src="item.image"
+                            :src="item.image!"
                             :alt="item.name"
                             class="card-image absolute top-0 left-0 h-full w-full object-cover transition-all duration-500"
                         />
                         <div
                             class="bg-primary text-primary-content absolute top-3 right-3 rounded-full px-3 py-1 text-sm font-medium"
                         >
-                            {{ item.price }}
+                            ${{ item.price }}
                         </div>
                     </figure>
 
@@ -292,7 +309,7 @@ onMounted(() => {
                                 :key="index"
                                 class="badge badge-outline px-2 py-1 text-xs"
                             >
-                                {{ tag }}
+                                {{ tag.name }}
                             </div>
                         </div>
                     </div>
@@ -300,20 +317,89 @@ onMounted(() => {
             </div>
 
             <!-- Empty State -->
-            <div v-if="filteredItems.length === 0" class="py-12 text-center">
+            <div v-if="!hasItems" class="py-12 text-center">
                 <div class="mb-3 text-2xl">No menu items found</div>
                 <p class="text-base-content/70">
                     Try adjusting your search criteria
                 </p>
-                <button
-                    @click="
-                        searchQuery = '';
-                        filterMenu();
-                    "
-                    class="btn btn-primary mt-4"
-                >
+                <button @click="resetFilters" class="btn btn-primary mt-4">
                     Reset Search
                 </button>
+            </div>
+
+            <!-- Pagination Component (DaisyUI) -->
+            <div
+                class="mt-12 flex justify-center"
+                v-if="paginatedMenu.last_page > 1"
+            >
+                <div class="join">
+                    <!-- Previous page button -->
+                    <button
+                        class="join-item btn"
+                        :class="{
+                            'btn-disabled': paginatedMenu.current_page === 1,
+                        }"
+                        @click="goToPage(paginatedMenu.current_page - 1)"
+                        :disabled="paginatedMenu.current_page === 1"
+                    >
+                        «
+                    </button>
+
+                    <!-- Page numbers -->
+                    <template
+                        v-for="page in paginatedMenu.last_page"
+                        :key="page"
+                    >
+                        <!-- Show first page, current page, last page, and pages adjacent to current -->
+                        <button
+                            v-if="
+                                page === 1 ||
+                                page === paginatedMenu.last_page ||
+                                (page >= paginatedMenu.current_page - 1 &&
+                                    page <= paginatedMenu.current_page + 1)
+                            "
+                            class="join-item btn"
+                            :class="{
+                                'btn-active':
+                                    page === paginatedMenu.current_page,
+                            }"
+                            @click="goToPage(page)"
+                        >
+                            {{ page }}
+                        </button>
+
+                        <!-- Ellipsis for skipped pages -->
+                        <button
+                            v-else-if="
+                                (page === 2 &&
+                                    paginatedMenu.current_page > 3) ||
+                                (page === paginatedMenu.last_page - 1 &&
+                                    paginatedMenu.current_page <
+                                        paginatedMenu.last_page - 2)
+                            "
+                            class="join-item btn btn-disabled"
+                        >
+                            ...
+                        </button>
+                    </template>
+
+                    <!-- Next page button -->
+                    <button
+                        class="join-item btn"
+                        :class="{
+                            'btn-disabled':
+                                paginatedMenu.current_page ===
+                                paginatedMenu.last_page,
+                        }"
+                        @click="goToPage(paginatedMenu.current_page + 1)"
+                        :disabled="
+                            paginatedMenu.current_page ===
+                            paginatedMenu.last_page
+                        "
+                    >
+                        »
+                    </button>
+                </div>
             </div>
         </div>
     </div>
