@@ -15,7 +15,9 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
 
-        $menuItemsQuery = MenuItem::query()->with('tags');
+        $menuItemsQuery = MenuItem::query()
+            ->with('tags')
+            ->search(['name', 'description', 'price', 'tags.name']);
 
         if ($request->query('category')) {
             $menuItemsQuery->whereRelation('category', 'name', '=', $request->query('category'));
@@ -24,7 +26,7 @@ class CategoryController extends Controller
         $menuItems = $menuItemsQuery->paginate($request->query('per_page', 10));
 
         return inertia('Home/MenusPage', [
-            'categories' => CategoryData::collect($categories),
+            'categories' => fn () => CategoryData::collect($categories),
             'menuItems' => MenuItemData::collect($menuItems, PaginatedDataCollection::class)
         ]);
     }
