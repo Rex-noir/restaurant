@@ -119,7 +119,7 @@ onMounted(() => {
                                             'Home/MenusPage',
                                     }"
                                 >
-                                    Menu
+                                    Menus
                                 </Link>
                             </li>
                             <li><a href="/reservations">Reservations</a></li>

@@ -135,7 +135,9 @@ onMounted(() => {
                     </p>
                     <div class="flex gap-4">
                         <button class="btn btn-primary">Reserve a Table</button>
-                        <button class="btn btn-outline">View Menu</button>
+                        <button class="btn btn-outline">
+                            View Menus or Order Directly Online
+                        </button>
                     </div>
                 </div>
                 <!-- Right Image -->
