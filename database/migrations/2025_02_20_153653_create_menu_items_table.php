@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('image_path')->nullable();
             $table->boolean('is_available')->default(true);
             $table->integer('preparation_time')->nullable();
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

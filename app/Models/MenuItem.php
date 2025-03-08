@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use App\Casts\MoneyCast;
+use App\Observers\MenuItemObserver;
 use App\traits\Searchable;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Tags\HasTags;
 
+#[ObservedBy(MenuItemObserver::class)]
 class MenuItem extends Model
 {
     /** @use HasFactory<\Database\Factories\MenuItemFactory> */
@@ -22,6 +25,7 @@ class MenuItem extends Model
         'image_path',
         'is_available',
         'preparation_time',
+        'slug'
     ];
 
     protected $casts = [
