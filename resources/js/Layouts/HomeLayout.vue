@@ -7,7 +7,9 @@ import { onMounted } from 'vue';
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
-const user = usePage().props.auth.user;
+const page = usePage();
+
+const user = page.props.auth.user;
 
 onMounted(() => {
     // Navbar Animation
@@ -109,7 +111,7 @@ onMounted(() => {
                                 :href="route('home.menus')"
                                 :class="{
                                     'text-accent font-semibold':
-                                        $page.url === '/menus',
+                                        $page.component === 'Home/MenusPage',
                                 }"
                                 >Menu</Link
                             >
@@ -127,7 +129,7 @@ onMounted(() => {
                                 :href="route('home.menus')"
                                 :class="{
                                     'text-accent border-accent border-b-2 pb-1 font-semibold':
-                                        $page.url === '/menus',
+                                        $page.component === 'Home/MenusPage',
                                 }"
                                 class="text-base-content hover:text-primary transition-colors"
                             >
