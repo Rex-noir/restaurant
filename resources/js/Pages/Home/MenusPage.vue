@@ -229,7 +229,7 @@ onMounted(() => {
                     </p>
                 </div>
                 <div ref="searchRef" class="w-full md:w-auto">
-                    <label class="input input-ghost">
+                    <label class="input input-ghost w-full">
                         <input
                             v-model="searchQuery"
                             type="text"
