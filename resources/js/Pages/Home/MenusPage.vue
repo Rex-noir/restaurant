@@ -313,13 +313,25 @@ onMounted(() => {
                         <p class="text-base-content/70 mb-4 text-sm">
                             {{ item.description }}
                         </p>
-                        <div class="mt-auto flex flex-wrap gap-2">
-                            <div
-                                v-for="(tag, index) in item.tags"
-                                :key="index"
-                                class="badge badge-outline px-2 py-1 text-xs"
-                            >
-                                {{ tag.name }}
+                        <div
+                            class="mt-auto flex flex-wrap justify-between gap-2"
+                        >
+                            <div class="flex flex-wrap gap-2">
+                                <div
+                                    v-for="(tag, index) in item.tags"
+                                    :key="index"
+                                    class="badge badge-outline px-2 py-1 text-xs"
+                                >
+                                    {{ tag.name }}
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="btn btn-xs btn-secondary">
+                                    Add to Cart
+                                </button>
+                                <button class="btn btn-xs btn-primary">
+                                    View
+                                </button>
                             </div>
                         </div>
                     </div>
