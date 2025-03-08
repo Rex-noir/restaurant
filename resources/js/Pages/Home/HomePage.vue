@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import HomeLayout from '@/Layouts/HomeLayout.vue';
+import { Link } from '@inertiajs/vue3';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { onMounted } from 'vue';
@@ -135,9 +136,12 @@ onMounted(() => {
                     </p>
                     <div class="flex gap-4">
                         <button class="btn btn-primary">Reserve a Table</button>
-                        <button class="btn btn-outline">
+                        <Link
+                            :href="route('home.menus')"
+                            class="btn btn-outline"
+                        >
                             View Menus or Order Directly Online
-                        </button>
+                        </Link>
                     </div>
                 </div>
                 <!-- Right Image -->
