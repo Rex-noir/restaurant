@@ -73,8 +73,6 @@ watch(currentPage, () => {
 
 const paginatedMenu = computed(() => page.props.menuItems);
 
-console.log(paginatedMenu.value);
-
 // Pagination helpers
 const goToPage = (page: number) => {
     currentPage.value = page;
