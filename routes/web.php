@@ -3,6 +3,7 @@
 use App\Data\CategoryData;
 use App\Data\MenuItemData;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', fn () => inertia('Home/HomePage'))->name('home');
-Route::get('/menus', [CategoryController::class, 'index'])->name('home.menus');
+Route::get('/menus', [MenuItemController::class, 'index'])->name('menus.index');
+Route::get('/menus/{slug}', [MenuItemController::class, 'show'])->name('menus.show');
 
 require __DIR__.'/auth.php';

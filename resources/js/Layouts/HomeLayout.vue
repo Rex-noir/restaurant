@@ -112,7 +112,7 @@ onMounted(() => {
                         <ul class="menu menu-horizontal">
                             <li>
                                 <Link
-                                    :href="route('home.menus')"
+                                    :href="route('menus.index')"
                                     :class="{
                                         'text-accent font-semibold':
                                             $page.component ===
@@ -129,7 +129,7 @@ onMounted(() => {
                 </div>
             </div>
             <!-- Main Content -->
-            <main class="bg-neutral flex-grow">
+            <main class="mx-auto mt-3 max-w-6xl grow">
                 <slot />
             </main>
 

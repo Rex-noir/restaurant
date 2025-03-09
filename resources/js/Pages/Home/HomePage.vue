@@ -137,7 +137,7 @@ onMounted(() => {
                     <div class="flex gap-4">
                         <button class="btn btn-primary">Reserve a Table</button>
                         <Link
-                            :href="route('home.menus')"
+                            :href="route('menus.index')"
                             class="btn btn-outline"
                         >
                             View Menus or Order Directly Online
