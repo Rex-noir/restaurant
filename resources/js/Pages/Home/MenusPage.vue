@@ -83,11 +83,13 @@ const goToPage = (page: number) => {
 
 // Helper to update category in URL
 const updateCategory = (category: string) => {
-    if (!category.trim()) return;
-    const params: any = {
-        category: category,
-        page: 1, // Reset to page 1 when changing category
+    const params:any = {};
+
+    if (category.trim()) {
+        params['category'] = category;
+        params['page'] = 1; // Reset to page 1 when changing category
     };
+ 
     if (searchQuery.value.trim()) {
         params['search'] = searchQuery.value;
     }
