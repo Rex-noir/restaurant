@@ -57,4 +57,9 @@ class MenuItem extends Model
             }
         });
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(MenuItemReview::class);
+    }
 }
