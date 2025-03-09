@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import HomeLayout from '@/Layouts/HomeLayout.vue';
 import { PageProps, PaginatedResponse } from '@/types';
-import { router, usePage } from '@inertiajs/vue3';
+import { Link, router, usePage } from '@inertiajs/vue3';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { debounce } from 'radash';
@@ -39,16 +39,19 @@ const getSelectedCategory = () => {
 // Fetch menu items with current filters
 const fetchMenuItems = (resetPage = false) => {
     const params: any = {
-        category: getSelectedCategory(),
         page: resetPage ? 1 : currentPage.value,
     };
+
+    if (getSelectedCategory()) {
+        params['category'] = getSelectedCategory();
+    }
 
     if (searchQuery.value.trim()) {
         params['search'] = searchQuery.value;
     }
 
     router.get(
-        route('home.menus', params),
+        route('menus.index', params),
         {},
         { preserveScroll: true, only: ['menuItems'], preserveState: true },
     );
@@ -80,6 +83,7 @@ const goToPage = (page: number) => {
 
 // Helper to update category in URL
 const updateCategory = (category: string) => {
+    if (!category.trim()) return;
     const params: any = {
         category: category,
         page: 1, // Reset to page 1 when changing category
@@ -89,7 +93,7 @@ const updateCategory = (category: string) => {
     }
 
     router.get(
-        route('home.menus', params),
+        route('menus.index', params),
         {},
         { preserveScroll: true, preserveState: true, showProgress: true },
     );
@@ -207,8 +211,8 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="bg-base-100 min-h-screen overflow-hidden py-12">
-        <div class="container mx-auto max-w-6xl px-4">
+    <div class="min-h-screen overflow-hidden py-12">
+        <div class="container">
             <!-- Header Section with Subtle Design -->
             <div
                 ref="headerRef"
@@ -329,9 +333,14 @@ onMounted(() => {
                                 <button class="btn btn-xs btn-secondary">
                                     Add to Cart
                                 </button>
-                                <button class="btn btn-xs btn-primary">
+                                <Link
+                                    :href="
+                                        route('menus.show', { slug: item.slug })
+                                    "
+                                    class="btn btn-xs btn-primary"
+                                >
                                     View
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </div>
