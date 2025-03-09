@@ -14,7 +14,7 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         \App\Models\Category::factory(10)
-            ->has(MenuItem::factory()->count(10), 'menuItems')
+            ->has(MenuItem::factory()->count(2), 'menuItems')
             ->create();
     }
 }
