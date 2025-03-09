@@ -129,7 +129,7 @@ onMounted(() => {
                 </div>
             </div>
             <!-- Main Content -->
-            <main class="mx-auto mt-3 max-w-6xl grow">
+            <main class="mx-auto max-w-6xl grow p-3">
                 <slot />
             </main>
 
