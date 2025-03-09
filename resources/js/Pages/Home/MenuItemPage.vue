@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import HomeLayout from '@/Layouts/HomeLayout.vue';
 import { PageProps } from '@/types';
+import { ArrowLeftIcon } from '@heroicons/vue/24/outline';
 import { Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
@@ -13,14 +14,14 @@ defineOptions({
 });
 </script>
 <template>
-    <div class="bg-base-200 container min-h-screen w-full space-y-10">
+    <div class="bg-base-200 container min-h-screen w-full space-y-8">
         <!-- Back button and title -->
         <div class="flex w-full items-center gap-3 py-2">
             <Link
                 :href="route('menus.index')"
-                class="btn btn-sm btn-accent text-accent-content"
+                class="btn btn-sm btn-ghost text-accent-content"
             >
-                <- Go Back
+                <ArrowLeftIcon class="size-7" />
             </Link>
             <h1 class="text-4xl font-bold">{{ item.name }}</h1>
         </div>
