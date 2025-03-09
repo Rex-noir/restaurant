@@ -83,13 +83,13 @@ const goToPage = (page: number) => {
 
 // Helper to update category in URL
 const updateCategory = (category: string) => {
-    const params:any = {};
+    const params: any = {};
 
     if (category.trim()) {
         params['category'] = category;
         params['page'] = 1; // Reset to page 1 when changing category
-    };
- 
+    }
+
     if (searchQuery.value.trim()) {
         params['search'] = searchQuery.value;
     }
@@ -234,7 +234,7 @@ onMounted(() => {
                         specialties
                     </p>
                 </div>
-                <div ref="searchRef" class="w-full md:w-auto">
+                <div ref="searchRef" class="w-full p-2 md:w-auto">
                     <label class="input input-ghost w-full">
                         <input
                             v-model="searchQuery"
