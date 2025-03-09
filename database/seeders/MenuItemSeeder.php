@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\MenuItem;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class MenuItemSeeder extends Seeder
 {
@@ -15,9 +16,9 @@ class MenuItemSeeder extends Seeder
     {
         MenuItem::createQuietly([
             'name' => 'Guacamole',
-            'description' => 'A delicious burger with all the fixings.',
+            'description' => fake()->sentence(),
             'price' => 10.99,
-            'image_path' => storage_path('app/public/images/menu-items/guacamole.webp'),
+            'image_path' => 'images/menu-items/guacamole.webp',
             'category_id' => 1,
             'preparation_time' => 10,
             'slug' => 'guacamole',
