@@ -9,6 +9,8 @@ declare namespace App.Data {
         description: string | null;
         price: number;
         image: string | null;
+        preparationTime: number | null;
+        slug: string;
         isAvailable: boolean;
         tags: Array<App.Data.TagData> | null;
     };

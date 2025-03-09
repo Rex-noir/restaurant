@@ -17,6 +17,8 @@ class MenuItemData extends Data
         #[WithTransformer(PublicUrlTransformer::class)]
         #[MapOutputName('image')]
         public ?string $imagePath,
+        public ?int $preparationTime,
+        public string $slug,
         public bool $isAvailable,
         /** @var array<TagData> */
         public ?array $tags,
