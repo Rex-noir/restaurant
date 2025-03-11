@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import MenuItem from '@/Components/menu-item.vue';
 import HomeLayout from '@/Layouts/HomeLayout.vue';
 import { PageProps, PaginatedResponse } from '@/types';
-import { Link, router, usePage } from '@inertiajs/vue3';
+import { router, usePage } from '@inertiajs/vue3';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { debounce } from 'radash';
@@ -293,60 +294,11 @@ onMounted(() => {
                 v-if="hasItems"
             >
                 <!-- Menu Card with Modern Design -->
-                <div
+                <MenuItem
                     v-for="item in paginatedMenu.data"
-                    :key="item.name"
-                    class="menu-card card bg-base-100 border-base-200 overflow-hidden border shadow-md hover:shadow-lg"
-                >
-                    <!-- Image Container with Fixed Aspect Ratio -->
-                    <figure class="relative overflow-hidden pt-[66%]">
-                        <img
-                            :src="item.image!"
-                            :alt="item.name"
-                            class="card-image absolute top-0 left-0 h-full w-full object-cover transition-all duration-500"
-                        />
-                        <div
-                            class="bg-primary text-primary-content absolute top-3 right-3 rounded-full px-3 py-1 text-sm font-medium"
-                        >
-                            ${{ item.price }}
-                        </div>
-                    </figure>
-
-                    <div class="card-body p-6">
-                        <h2 class="card-title mb-2 text-xl font-semibold">
-                            {{ item.name }}
-                        </h2>
-                        <p class="text-base-content/70 mb-4 text-sm">
-                            {{ item.description }}
-                        </p>
-                        <div
-                            class="mt-auto flex flex-wrap justify-between gap-2"
-                        >
-                            <div class="flex flex-wrap gap-2">
-                                <div
-                                    v-for="(tag, index) in item.tags"
-                                    :key="index"
-                                    class="badge badge-outline px-2 py-1 text-xs"
-                                >
-                                    {{ tag.name }}
-                                </div>
-                            </div>
-                            <div class="flex gap-2">
-                                <button class="btn btn-xs btn-secondary">
-                                    Add to Cart
-                                </button>
-                                <Link
-                                    :href="
-                                        route('menus.show', { slug: item.slug })
-                                    "
-                                    class="btn btn-xs btn-primary"
-                                >
-                                    View
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    :key="item.slug"
+                    :item="item"
+                />
             </div>
 
             <!-- Empty State -->
