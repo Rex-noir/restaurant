@@ -18,6 +18,7 @@ class MenuItemController extends Controller
 
         $menuItemsQuery = MenuItem::query()
             ->with('tags')
+            ->where('is_available', true)
             ->search(['name', 'description', 'price', 'tags.name']);
 
         if ($request->query('category')) {
@@ -36,8 +37,11 @@ class MenuItemController extends Controller
     {
         $menuItem = MenuItem::with(['tags'])->where('slug', $slug)->first();
 
+        $relatedItems = $menuItem->getRelationItems();
+
         return inertia('Home/MenuItemPage', [
-            'menuItem' => fn () => MenuItemData::from($menuItem)
+            'menuItem' => fn () => MenuItemData::from($menuItem),
+            'relatedItems' => fn () => MenuItemData::collect($relatedItems)
         ]);
     }
 }
