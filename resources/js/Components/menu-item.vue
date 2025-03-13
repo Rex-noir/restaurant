@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'; // Import if using Inertia.js
-import { defineEmits, defineProps } from 'vue';
 
 const props = defineProps<{
     item: App.Data.MenuItemData;
