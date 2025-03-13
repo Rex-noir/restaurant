@@ -62,4 +62,23 @@ class MenuItem extends Model
     {
         return $this->hasMany(MenuItemReview::class);
     }
+
+    public function getRelationItems(int $limit = 4)
+    {
+        $query = $this::where('category_id', '=', $this->category_id)
+            ->where('id', '!=', $this->id)
+            ->withAvg('reviews', 'stars')
+            ->where('is_available', true);
+
+        $tagIds = $this->tags()->pluck('id');
+
+        if ($tagIds->isNotEmpty()) {
+            $query->withAnyTags($tagIds);
+        }
+
+        return $query
+            ->orderByDesc('reviews_avg_stars')
+            ->limit($limit)
+            ->get();
+    }
 }
