@@ -21,9 +21,19 @@ class MenuItemFactory extends Factory
             'name' => fake()->words(3, true),
             'description' => fake()->paragraph(),
             'price' => fake()->numberBetween(100, 1000),
-            'image_path' => fake()->imageUrl(),
             'is_available' => fake()->boolean(),
-            'preparation_time' => fake()->numberBetween(10, 60)
+            'preparation_time' => fake()->numberBetween(10, 60),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (\App\Models\MenuItem $menuItem) {
+            $menuItem->tags()->createMany([
+                ['name' => fake()->word()],
+                ['name' => fake()->word()],
+                ['name' => fake()->word()],
+            ]);
+        });
     }
 }
