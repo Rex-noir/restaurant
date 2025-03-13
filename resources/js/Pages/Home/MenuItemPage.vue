@@ -1,13 +1,21 @@
 <script setup lang="ts">
+import MenuItem from '@/Components/menu-item.vue';
 import HomeLayout from '@/Layouts/HomeLayout.vue';
 import { PageProps } from '@/types';
 import { ArrowLeftIcon } from '@heroicons/vue/24/outline';
 import { Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
-const page = usePage<PageProps<{ menuItem: App.Data.MenuItemData }>>();
+const page = usePage<
+    PageProps<{
+        menuItem: App.Data.MenuItemData;
+        relatedItems: App.Data.MenuItemData[];
+    }>
+>();
+console.log(page.props.relatedItems);
 
 const item = computed(() => page.props.menuItem);
+const relatedItems = computed(() => page.props.relatedItems);
 
 defineOptions({
     layout: HomeLayout,
@@ -40,7 +48,7 @@ defineOptions({
             </div>
 
             <!-- Product details -->
-            <div class="flex flex-col gap-4">
+            <div class="flex flex-col justify-between gap-4">
                 <div class="flex flex-wrap gap-2">
                     <div
                         v-for="tag in item.tags"
@@ -78,12 +86,19 @@ defineOptions({
 
         <!-- Responsive image grid -->
         <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-            <div v-for="i in 2" :key="i" class="overflow-hidden rounded-lg">
+            <div v-for="i in 4" :key="i" class="overflow-hidden rounded-lg">
                 <img
                     :src="`https://placehold.co/300x200?text=Image+${i}`"
                     class="h-48 w-full object-cover transition-transform duration-300 hover:scale-105"
                     alt="Gallery Image"
                 />
+            </div>
+        </div>
+
+        <div v-if="relatedItems.length > 0">
+            <h2 class="text-2xl font-semibold">Related Items Section</h2>
+            <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                <MenuItem v-for="item in relatedItems" :item="item" />
             </div>
         </div>
 
