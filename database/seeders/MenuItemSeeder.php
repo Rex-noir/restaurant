@@ -18,7 +18,6 @@ class MenuItemSeeder extends Seeder
             'name' => 'Guacamole',
             'description' => fake()->sentence(),
             'price' => 10.99,
-            'image_path' => 'images/menu-items/guacamole.webp',
             'category_id' => 1,
             'preparation_time' => 10,
             'slug' => 'guacamole',
