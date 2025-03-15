@@ -41,7 +41,7 @@ class CategoryResource extends Resource
                     ->disk('public')
                     ->previewable()
                     ->image()
-                    ->directory('images/categories')
+                    ->directory('images')
                     ->columnSpanFull(),
 
             ]);
