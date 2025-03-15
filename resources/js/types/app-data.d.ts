@@ -4,15 +4,20 @@ declare namespace App.Data {
         description: string | null;
         image: string | null;
     };
+    export type ImageData = {
+        url: string;
+        order: number;
+    };
     export type MenuItemData = {
         name: string;
         description: string | null;
         price: number;
-        image: string | null;
-        preparationTime: number | null;
+        preparation_time: number | null;
         slug: string;
-        isAvailable: boolean;
-        tags: Array<App.Data.TagData> | null;
+        is_available: boolean;
+        primary_image: App.Data.ImageData;
+        tags?: Array<App.Data.TagData>;
+        images?: Array<App.Data.ImageData>;
     };
     export type TagData = {
         name: string;

@@ -135,7 +135,7 @@ return [
      */
     'name_mapping_strategy' => [
         'input' => SnakeCaseMapper::class,
-        'output' => null,
+        'output' => SnakeCaseMapper::class,
     ],
 
     /*
