@@ -41,7 +41,7 @@ defineOptions({
                 <div id="slide1" class="carousel-item w-full">
                     <img
                         class="h-96 w-full object-cover"
-                        :src="item.image!"
+                        :src="item.primary_image.url"
                         alt="Main Image"
                     />
                 </div>
@@ -65,7 +65,7 @@ defineOptions({
                     >
                     <span class="badge badge-accent text-lg"
                         >Preparation time :
-                        {{ item.preparationTime ?? 0 }} m</span
+                        {{ item.preparation_time ?? 0 }} m</span
                     >
                 </div>
                 <span class="badge badge-ghost text-info"
@@ -86,11 +86,15 @@ defineOptions({
 
         <!-- Responsive image grid -->
         <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-            <div v-for="i in 4" :key="i" class="overflow-hidden rounded-lg">
+            <div
+                v-for="i in item.images"
+                :key="i.url"
+                class="overflow-hidden rounded-lg"
+            >
                 <img
-                    :src="`https://placehold.co/300x200?text=Image+${i}`"
+                    :src="i.url"
                     class="h-48 w-full object-cover transition-transform duration-300 hover:scale-105"
-                    alt="Gallery Image"
+                    :alt="item.name"
                 />
             </div>
         </div>

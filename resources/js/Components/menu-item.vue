@@ -17,7 +17,7 @@ const emit = defineEmits<{
         <!-- Image Container -->
         <figure class="relative overflow-hidden pt-[66%]">
             <img
-                :src="item.image || '/default-image.jpg'"
+                :src="item.primary_image.url || '/default-image.jpg'"
                 :alt="item.name"
                 class="card-image absolute top-0 left-0 h-full w-full object-cover transition-all duration-500"
             />
