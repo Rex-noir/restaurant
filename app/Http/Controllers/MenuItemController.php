@@ -17,7 +17,7 @@ class MenuItemController extends Controller
         $categories = Category::all();
 
         $menuItemsQuery = MenuItem::query()
-            ->with('tags')
+            ->with(['tags', 'primary_image'])
             ->where('is_available', true)
             ->search(['name', 'description', 'price', 'tags.name']);
 
@@ -35,7 +35,7 @@ class MenuItemController extends Controller
 
     public function show(string $slug)
     {
-        $menuItem = MenuItem::with(['tags'])->where('slug', $slug)->first();
+        $menuItem = MenuItem::with(['tags', 'primary_image', 'images'])->where('slug', $slug)->first();
 
         $relatedItems = $menuItem->getRelationItems();
 

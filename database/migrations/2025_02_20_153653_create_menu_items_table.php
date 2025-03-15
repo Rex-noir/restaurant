@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->integer('price');
-            $table->string('image_path')->nullable();
             $table->boolean('is_available')->default(true);
             $table->integer('preparation_time')->nullable();
             $table->string('slug')->unique();

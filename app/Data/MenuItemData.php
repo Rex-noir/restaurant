@@ -2,10 +2,10 @@
 
 namespace App\Data;
 
-use App\Data\Transformers\PublicUrlTransformer;
-use Spatie\LaravelData\Attributes\MapOutputName;
-use Spatie\LaravelData\Attributes\WithTransformer;
+use App\Models\MenuItem;
+use Illuminate\Database\Eloquent\Collection;
 use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Lazy;
 
 /** @typescript */
 class MenuItemData extends Data
@@ -14,14 +14,23 @@ class MenuItemData extends Data
         public string $name,
         public ?string $description,
         public float $price,
-        #[WithTransformer(PublicUrlTransformer::class)]
-        #[MapOutputName('image')]
-        public ?string $imagePath,
         public ?int $preparationTime,
         public string $slug,
         public bool $isAvailable,
+        public ImageData $primaryImage,
         /** @var array<TagData> */
-        public ?array $tags,
+        public Lazy|Collection $tags,
+        /** @var array<ImageData> */
+        public Lazy|Collection $images
     ) {
+    }
+
+    public static function fromModel(MenuItem $model)
+    {
+        return self::from([
+            ...$model->toArray(),
+            'images' => Lazy::whenLoaded('images', $model, fn () => ImageData::collect($model->images)),
+            'tags' => Lazy::whenLoaded('tags', $model, fn () => TagData::collect($model->tags)),
+        ]);
     }
 }

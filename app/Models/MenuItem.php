@@ -22,8 +22,6 @@ class MenuItem extends Model
         'name',
         'description',
         'price',
-        'image_path',
-        'is_available',
         'preparation_time',
         'slug'
     ];
@@ -41,26 +39,21 @@ class MenuItem extends Model
     public static function boot()
     {
         parent::boot();
-
-        static::updating(function (MenuItem $category) {
-            if ($category->isDirty('image_path')) {
-                $oldImage = $category->getOriginal('image_path');
-                if ($oldImage && Storage::disk('public')->exists($oldImage)) {
-                    Storage::disk('public')->delete($oldImage);
-                }
-            }
-        });
-
-        static::deleting(function (Category $category) {
-            if ($category->image_path && Storage::disk('public')->exists($category->image_path)) {
-                Storage::disk('public')->delete($category->image_path);
-            }
-        });
     }
 
     public function reviews()
     {
         return $this->hasMany(MenuItemReview::class);
+    }
+
+    public function primary_image()
+    {
+        return $this->morphOne(Image::class, 'imageable')->chaperone();
+    }
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable')->chaperone();
     }
 
     public function getRelationItems(int $limit = 4)

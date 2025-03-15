@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\CategoryResource\RelationManagers;
 
 use Filament\Forms;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\SpatieTagsInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -39,12 +40,27 @@ class MenuItemsRelationManager extends RelationManager
                     ->numeric()
                     ->prefix('min'),
 
-                Forms\Components\FileUpload::make('image_path')
+                Forms\Components\FileUpload::make('primary_image')
                     ->columnSpanFull()
                     ->directory('images/menu-items')
                     ->image()
                     ->previewable()
                     ->imageEditor(),
+
+                Repeater::make('images')
+                    ->relationship('images')
+                    ->reorderable(true)
+                    ->columnSpanFull()
+                    ->simple(Forms\Components\FileUpload::make('path')
+                        ->columnSpanFull()
+                        ->directory('images')
+                        ->image()
+                        ->disk('public')
+                        ->previewable()
+                        ->imageEditor(), )
+                    ->addActionLabel('Add Image')
+                    ->minItems(1)
+                    ->defaultItems(2),
 
                 SpatieTagsInput::make('tags')
                     ->type('menu_item_tags')

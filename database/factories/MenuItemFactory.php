@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Image;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -34,6 +35,9 @@ class MenuItemFactory extends Factory
                 ['name' => fake()->word()],
                 ['name' => fake()->word()],
             ]);
+
+            $menuItem->primary_image()->create(Image::factory()->make()->toArray());
+            $menuItem->images()->createMany(Image::factory()->count(3)->make()->toArray());
         });
     }
 }
