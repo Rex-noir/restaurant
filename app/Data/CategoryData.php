@@ -12,8 +12,7 @@ class CategoryData extends Data
     public function __construct(
         public string $name,
         public ?string $description,
-        #[MapOutputName('image')]
-        public ?string $imagePath,
+        public ?string $image,
     ) {
     }
 }
