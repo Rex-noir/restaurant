@@ -8,14 +8,14 @@ import { computed } from 'vue';
 
 const page = usePage<
     PageProps<{
-        menuItem: App.Data.MenuItemData;
-        relatedItems: App.Data.MenuItemData[];
+        menu_item: App.Data.MenuItemData;
+        related_items: App.Data.MenuItemData[];
     }>
 >();
 console.log(page.props.relatedItems);
 
-const item = computed(() => page.props.menuItem);
-const relatedItems = computed(() => page.props.relatedItems);
+const item = computed(() => page.props.menu_item);
+const relatedItems = computed(() => page.props.related_items);
 
 defineOptions({
     layout: HomeLayout,

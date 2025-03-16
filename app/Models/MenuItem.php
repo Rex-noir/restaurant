@@ -101,23 +101,37 @@ class MenuItem extends Model
         return $this->morphMany(Image::class, 'imageable')->chaperone();
     }
 
-    public function getRelationItems(int $limit = 4)
+    public function getRelatedMenuItems(int $limit = 4)
     {
-        $query = $this::with(['tags'])->where('category_id', '=', $this->category_id)
-            ->where('id', '!=', $this->id)
+        $tags = $this->tags->pluck('id'); // Get the tag IDs of the current menu item
+
+        // Step 1: Try to find items that share at least one tag
+        $taggedItems = self::with(['tags', 'primary_image'])
+            ->where('id', '!=', $this->id) // Exclude the current menu item
+            ->where('is_available', true)
             ->withAvg('reviews', 'stars')
-            ->where('is_available', true);
-
-        $tags = $this->tags->pluck('id');
-
-
-        if ($tags->isNotEmpty()) {
-            $query->withAnyTags($tags);
-        }
-
-        return $query
-            ->orderByDesc('reviews_avg_stars')
+            ->when($tags->isNotEmpty(), function ($query) use ($tags) {
+                $query->whereHas('tags', function ($query) use ($tags) {
+                    $query->whereIn('id', $tags);
+                })
+                    ->orderByRaw("(SELECT COUNT(*) FROM taggables WHERE taggables.taggable_id = menu_items.id AND taggables.tag_id IN (".$tags->implode(',').")) DESC");
+            })
             ->limit($limit)
             ->get();
+
+        // Step 2: If no items were found with matching tags, fallback to category-based filtering
+        if ($taggedItems->isEmpty()) {
+            $taggedItems = self::with(['tags', 'primary_image'])
+                ->where('id', '!=', $this->id)
+                ->where('is_available', true)
+                ->where('category_id', $this->category_id) // Fallback to same category
+                ->withAvg('reviews', 'stars')
+                ->orderByDesc('reviews_avg_stars') // Prioritize highly rated items
+                ->limit($limit)
+                ->get();
+        }
+
+        return $taggedItems;
     }
+
 }

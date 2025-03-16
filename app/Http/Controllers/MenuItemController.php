@@ -35,13 +35,13 @@ class MenuItemController extends Controller
 
     public function show(string $slug)
     {
-        $menuItem = MenuItem::with(['tags', 'primary_image', 'images'])->where('slug', $slug)->first();
+        $menu_item = MenuItem::with(['tags', 'primary_image', 'images'])->where('slug', $slug)->first();
 
-        $relatedItems = $menuItem->getRelationItems();
+        $related_items = $menu_item->getRelatedMenuItems();
 
         return inertia('Home/MenuItemPage', [
-            'menuItem' => fn () => MenuItemData::from($menuItem),
-            'relatedItems' => fn () => MenuItemData::collect($relatedItems)
+            'menu_item' => fn () => MenuItemData::from($menu_item),
+            'related_items' => fn () => MenuItemData::collect($related_items)
         ]);
     }
 }
