@@ -8,6 +8,9 @@ use App\traits\Searchable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Spatie\Tags\HasTags;
 
 #[ObservedBy(MenuItemObserver::class)]
@@ -36,7 +39,7 @@ use Spatie\Tags\HasTags;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem search()
+ * @method static \Illuminate\Database\Eloquent\Builder search(string|null $term = null, array $attributes = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem whereCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem whereDescription($value)
@@ -73,7 +76,7 @@ class MenuItem extends Model
         'price' => MoneyCast::class
     ];
 
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
@@ -88,12 +91,12 @@ class MenuItem extends Model
         return $this->hasMany(MenuItemReview::class);
     }
 
-    public function primary_image()
+    public function primary_image(): MorphOne
     {
         return $this->morphOne(Image::class, 'imageable')->chaperone();
     }
 
-    public function images()
+    public function images(): MorphMany
     {
         return $this->morphMany(Image::class, 'imageable')->chaperone();
     }
@@ -111,9 +114,6 @@ class MenuItem extends Model
         if ($tags->isNotEmpty()) {
             $query->withAnyTags($tags);
         }
-
-        dd($query->get());
-
 
         return $query
             ->orderByDesc('reviews_avg_stars')

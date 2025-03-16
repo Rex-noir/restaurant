@@ -19,7 +19,7 @@ class MenuItemController extends Controller
         $menuItemsQuery = MenuItem::query()
             ->with(['tags', 'primary_image'])
             ->where('is_available', true)
-            ->search(['name', 'description', 'price', 'tags.name']);
+            ->search(request()->query('search'), ['name', 'description', 'price', 'tags.name']);
 
         if ($request->query('category')) {
             $menuItemsQuery->whereRelation('category', 'name', '=', $request->query('category'));
