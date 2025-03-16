@@ -33,7 +33,7 @@ const emit = defineEmits<{
             <h2 class="card-title mb-2 text-xl font-semibold">
                 {{ item.name }}
             </h2>
-            <p class="text-base-content/70 mb-4 text-sm">
+            <p class="text-base-content/70 mb-4 line-clamp-3 text-sm">
                 {{ item.description }}
             </p>
 
