@@ -124,6 +124,9 @@ onMounted(() => {
                             </li>
                             <li><a href="/reservations">Reservations</a></li>
                             <li><a href="/about">About Us</a></li>
+                            <li v-if="!page.props.auth.user">
+                                <Link :href="route('login')">Login</Link>
+                            </li>
                         </ul>
                     </div>
                 </div>
