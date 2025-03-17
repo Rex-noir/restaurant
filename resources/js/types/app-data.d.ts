@@ -9,6 +9,7 @@ declare namespace App.Data {
         order: number;
     };
     export type MenuItemData = {
+        id: number;
         name: string;
         description: string | null;
         price: number;
@@ -19,8 +20,19 @@ declare namespace App.Data {
         tags?: Array<App.Data.TagData>;
         images?: Array<App.Data.ImageData>;
     };
+    export type MenuItemReviewData = {
+        user_id: number;
+        stars: number | null;
+        review_text: string | null;
+        user?: App.Data.UserData;
+    };
     export type TagData = {
         name: string;
+    };
+    export type UserData = {
+        id?: number;
+        name: string;
+        email: string;
     };
 }
 declare namespace App.enums {
