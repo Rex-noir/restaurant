@@ -14,6 +14,7 @@ export type PageProps<
         user: User;
     };
     ziggy: Config & { location: string };
+    errors: Record<string, string[]>;
 };
 // Define a generic interface for paginated responses
 export interface PaginatedResponse<T> {
