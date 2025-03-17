@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $menu_item_id
@@ -35,7 +35,7 @@ class MenuItemReview extends Model
     /** @use HasFactory<\Database\Factories\MenuItemReviewFactory> */
     use HasFactory;
 
-    protected $fillalble = [
+    protected $fillable = [
         'menu_item_id',
         'user_id',
         'stars',
