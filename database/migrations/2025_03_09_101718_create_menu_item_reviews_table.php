@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(MenuItem::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->unsignedBigInteger('stars')->nullable();
+            $table->tinyInteger('stars')->nullable();
             $table->text('review_text')->nullable();
             $table->timestamps();
         });
