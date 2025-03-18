@@ -11,6 +11,44 @@ const page = usePage();
 
 const user = page.props.auth.user;
 
+const menuItems = [
+    {
+        label: 'Menus',
+        name: 'menus.index',
+        visible: true,
+    },
+    // {
+    //     label: 'Reservations',
+    //     name: '/reservations',
+    //     visible: true,
+    // },
+    // {
+    //     label: 'About Us',
+    //     name: '/about',
+    //     visible: true,
+    // },
+    // {
+    //     label: 'Contact Us',
+    //     name: '/contact',
+    //     visible: true,
+    // },
+    {
+        label: 'Login',
+        name: 'login',
+        visible: !user,
+    },
+    {
+        label: 'Register',
+        name: 'register',
+        visible: !user,
+    },
+    {
+        label: 'My Account',
+        name: 'profile.edit',
+        visible: user,
+    },
+];
+
 onMounted(() => {
     // Navbar Animation
     gsap.from('.navbar', {
@@ -110,23 +148,20 @@ onMounted(() => {
                     </div>
                     <div class="hidden flex-none lg:block">
                         <ul class="menu menu-horizontal">
-                            <li>
-                                <Link
-                                    :href="route('menus.index')"
-                                    :class="{
-                                        'text-accent font-semibold':
-                                            $page.component ===
-                                            'Home/MenusPage',
-                                    }"
-                                >
-                                    Menus
-                                </Link>
-                            </li>
-                            <li><a href="/reservations">Reservations</a></li>
-                            <li><a href="/about">About Us</a></li>
-                            <li v-if="!page.props.auth.user">
-                                <Link :href="route('login')">Login</Link>
-                            </li>
+                            <template v-for="item in menuItems">
+                                <li v-if="item.visible" :key="item.label">
+                                    <Link
+                                        replace
+                                        :href="route(item.name)"
+                                        :class="{
+                                            'text-accent font-semibold':
+                                                route().current() === item.name,
+                                        }"
+                                    >
+                                        {{ item.label }}
+                                    </Link>
+                                </li>
+                            </template>
                         </ul>
                     </div>
                 </div>
