@@ -15,6 +15,7 @@ class UserProfileData extends Data
         public string $phone,
         public ?string $dateOfBirth,
         public int|Optional $userId,
+        public ?ImageData $profileImage
     ) {
     }
 

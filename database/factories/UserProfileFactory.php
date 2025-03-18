@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\enums\GenderEnums;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +22,7 @@ class UserProfileFactory extends Factory
             'date_of_birth' => fake()->date(),
             'gender' => fake()->randomElement(GenderEnums::values()),
             'phone' => fake()->phoneNumber(),
-            'user_id' => UserFactory::class
+            'user_id' => User::factory()
         ];
     }
 }

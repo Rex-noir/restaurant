@@ -40,6 +40,7 @@ declare namespace App.Data {
         phone: string;
         date_of_birth: string | null;
         user_id?: number;
+        profile_image: App.Data.ImageData | null;
     };
 }
 declare namespace App.enums {
