@@ -33,6 +33,13 @@ declare namespace App.Data {
         id?: number;
         name: string;
         email: string;
+        profile?: App.Data.UserProfileData;
+    };
+    export type UserProfileData = {
+        gender: App.enums.GenderEnums;
+        phone: string;
+        date_of_birth: string | null;
+        user_id?: number;
     };
 }
 declare namespace App.enums {
