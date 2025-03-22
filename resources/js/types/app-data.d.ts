@@ -48,6 +48,7 @@ declare namespace App.enums {
         'Male' = 'male',
         'Female' = 'female',
         'Other' = 'other',
+        'Unknown' = 'unknown',
     }
     export enum OrderStatusEnum {
         'Pending' = 'pending',
