@@ -35,7 +35,7 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => Auth::user() ? UserData::from(Auth::getUser()->with('profile')->first()) : null,
+                'user' => Auth::user() ? UserData::from(Auth::getUser()->with('profile.profile_image')->first()) : null,
             ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),

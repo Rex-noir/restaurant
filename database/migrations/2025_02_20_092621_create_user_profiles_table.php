@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('user_profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete();
-            $table->dateTime('date_of_birth')->nullable();
+            $table->date('date_of_birth')->nullable();
             $table->enum('gender', GenderEnums::values())->default(GenderEnums::Other->value);
             $table->string('phone');
             $table->timestamps();

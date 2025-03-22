@@ -29,10 +29,36 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+
+        $data = $request->validated();
+
+        if (isset($data['new_password'])) {
+            $data['password'] = $data['new_password'];
+        }
+
+        $request->user()->fill($data);
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
+        }
+
+        if (isset($data['profile'])) {
+            $request->user()->profile->fill($data['profile']);
+            $request->user()->profile->save();
+
+            if (isset($data['profile']['profile_image'])) {
+                $profileImage = $data['profile']['profile_image'];
+
+                $path = $profileImage->store('profile_images', 'public');
+
+                if (request()->user()->profile->profile_image()->exists()) {
+                    request()->user()->profile->profile_image->update(['path' => $path]);
+                } else {
+                    request()->user()->profile->profile_image()->create(['path' => $path]);
+                }
+
+            }
+
         }
 
         $request->user()->save();
