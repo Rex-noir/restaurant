@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthLayout from '@/Layouts/AuthLayout.vue';
-import { router, usePage } from '@inertiajs/vue3';
+import { Head, router, usePage } from '@inertiajs/vue3';
 import { gsap } from 'gsap';
 import { computed, nextTick, onMounted, ref, useTemplateRef } from 'vue';
 
@@ -75,6 +75,13 @@ onMounted(async () => {
 </script>
 
 <template>
+    <Head>
+        <title>Login</title>
+        <meta
+            name="description"
+            content="A cozy haven where flavor meets tradition since 2003"
+        />
+    </Head>
     <div class="card bg-base-200 w-full max-w-lg shadow-xl" ref="formRef">
         <div class="card-body">
             <h2
