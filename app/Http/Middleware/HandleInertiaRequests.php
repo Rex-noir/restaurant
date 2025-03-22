@@ -32,10 +32,13 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+
+        $user = $request->user()?->load('profile.profile_image');
+
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => Auth::user() ? UserData::from(Auth::getUser()->with('profile.profile_image')->first()) : null,
+                'user' => $user ? UserData::from($user) : null,
             ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
