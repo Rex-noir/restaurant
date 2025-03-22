@@ -7,7 +7,7 @@ export type PageProps<
         user: App.Data.UserData;
     };
     ziggy: Config & { location: string };
-    errors: Record<string, string[]>;
+    errors: Record<string, string>;
 };
 // Define a generic interface for paginated responses
 export interface PaginatedResponse<T> {
