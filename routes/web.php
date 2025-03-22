@@ -17,6 +17,6 @@ Route::middleware('auth')->group(function () {
 Route::get('/', fn () => inertia('Home/HomePage'))->name('home');
 Route::get('/menus', [MenuItemController::class, 'index'])->name('menus.index');
 Route::get('/menus/{slug}', [MenuItemController::class, 'show'])->name('menus.show');
+Route::apiResource('menus.reviews', MenuItemReviewController::class)->only(['index', 'store']);
 
-Route::post('/menus/{menuItem}/reviews', [MenuItemReviewController::class, 'store'])->name('menus.reviews.store');
 require __DIR__.'/auth.php';

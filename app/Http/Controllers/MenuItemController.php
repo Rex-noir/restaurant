@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Data\CategoryData;
 use App\Data\MenuItemData;
+use App\Data\MenuItemReviewData;
 use App\Models\Category;
 use App\Models\MenuItem;
 use Illuminate\Http\Request;
@@ -35,13 +36,16 @@ class MenuItemController extends Controller
 
     public function show(string $slug)
     {
-        $menu_item = MenuItem::with(['tags', 'primary_image', 'images'])->where('slug', $slug)->first();
+        $menu_item = MenuItem::with(['tags', 'primary_image', 'images'])->where('slug', $slug)->firstOrFail();
 
         $related_items = $menu_item->getRelatedMenuItems();
 
+        $reviews = $menu_item->reviews()->with('user.profile.profile_image')->paginate(12);
+
         return inertia('Home/MenuItemPage', [
             'menu_item' => fn () => MenuItemData::from($menu_item),
-            'related_items' => fn () => MenuItemData::collect($related_items)
+            'related_items' => fn () => MenuItemData::collect($related_items),
+            'reviews' => fn () => MenuItemReviewData::collect($reviews),
         ]);
     }
 }
