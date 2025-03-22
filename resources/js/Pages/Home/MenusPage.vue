@@ -2,10 +2,10 @@
 import MenuItem from '@/Components/menu-item.vue';
 import HomeLayout from '@/Layouts/HomeLayout.vue';
 import { PageProps, PaginatedResponse } from '@/types';
+import debounce from '@/utils/debounce';
 import { router, usePage } from '@inertiajs/vue3';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import { debounce } from 'radash';
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
 
 const page = usePage<
@@ -60,9 +60,7 @@ const fetchMenuItems = (resetPage = false) => {
     searching.value = false;
 };
 
-const debounceFeatchItems = debounce({ delay: 1000 }, () =>
-    fetchMenuItems(true),
-);
+const debounceFeatchItems = debounce(() => fetchMenuItems(true), 1000);
 
 // Watch for search query changes and reset to page 1
 watch(searchQuery, () => {
