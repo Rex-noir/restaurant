@@ -12,7 +12,9 @@ use Spatie\LaravelData\Lazy;
 class MenuItemReviewData extends Data
 {
     public function __construct(
+        #[WithoutValidation()]
         public int $user_id,
+        public int $id,
         #[RequiredIf('review_text', 'null')]
         public ?int $stars,
         #[RequiredIf('stars', 'null')]

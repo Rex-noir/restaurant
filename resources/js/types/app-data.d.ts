@@ -22,6 +22,7 @@ declare namespace App.Data {
     };
     export type MenuItemReviewData = {
         user_id: number;
+        id: number;
         stars: number | null;
         review_text: string | null;
         user?: App.Data.UserData;
