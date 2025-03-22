@@ -9,3 +9,5 @@ function debounce<T extends (...args: any[]) => void>(
         timer = setTimeout(() => func(...args), delay);
     };
 }
+
+export default debounce;
