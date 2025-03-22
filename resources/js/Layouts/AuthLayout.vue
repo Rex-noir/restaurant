@@ -49,7 +49,7 @@ onMounted(() => {
                     </h1>
                 </div>
                 <div ref="welcomeRef" class="prose">
-                    <h2 class="mb-4 text-2xl font-medium">Welcome Back</h2>
+                    <h2 class="mb-4 text-2xl font-medium">Welcome!</h2>
                     <p class="text-base-content/70">
                         Experience the finest dining with our carefully curated
                         menu and exceptional service. Log in to continue your
