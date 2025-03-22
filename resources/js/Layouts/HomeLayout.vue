@@ -151,7 +151,6 @@ onMounted(() => {
                             <template v-for="item in menuItems">
                                 <li v-if="item.visible" :key="item.label">
                                     <Link
-                                        replace
                                         :href="route(item.name)"
                                         :class="{
                                             'text-accent font-semibold':
