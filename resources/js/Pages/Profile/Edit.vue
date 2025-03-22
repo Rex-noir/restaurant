@@ -9,14 +9,12 @@ import { onMounted, ref } from 'vue';
 const props = usePage().props;
 const user = props.auth.user;
 
-console.log(props.auth.user);
-
 const initialFormData = {
     name: user.name,
     email: user.email,
     profile: {
         date_of_birth: user.profile?.date_of_birth || '',
-        gender: user.profile?.gender ?? App.enums.GenderEnums.Other,
+        gender: user.profile?.gender!,
         phone: user.profile?.phone || '',
         profile_image: user.profile?.profile_image?.url,
     },
@@ -36,7 +34,7 @@ const userForm = useForm<{
     email: user.email,
     profile: {
         date_of_birth: user.profile?.date_of_birth || '',
-        gender: user.profile?.gender ?? App.enums.GenderEnums.Other,
+        gender: user.profile?.gender!,
         profile_image: user.profile?.profile_image?.url,
         phone: user.profile?.phone || '',
     },
@@ -79,7 +77,7 @@ const updateProfile = () => {
         .transform(() => ({ ...changes, _method: 'patch' }))
         .post(route('profile.update'), {
             onBefore: (params) => {
-                console.log(params.data);
+                // console.log(params.data);
             },
             onSuccess: () => {
                 isEditing.value = false;
@@ -162,7 +160,13 @@ defineOptions({
                     </h1>
                     <button
                         class="btn btn-sm btn-ghost btn-link"
-                        @click="router.post(route('logout'))"
+                        @click="
+                            router.post(
+                                route('logout'),
+                                {},
+                                { replace: true, fresh: true },
+                            )
+                        "
                     >
                         Log Out
                     </button>
@@ -219,7 +223,9 @@ defineOptions({
                                 <div
                                     class="bg-base-200 text-base-content h-48 w-48 rounded-full"
                                 >
-                                    <span class="text-3xl">LI</span>
+                                    <span class="p-3 text-3xl">
+                                        {{ user.name[0] }}
+                                    </span>
                                 </div>
                                 <div
                                     class="bg-opacity-0 hover:bg-opacity-40 absolute inset-0 flex items-center justify-center transition-all duration-300"
@@ -415,7 +421,7 @@ defineOptions({
                                         <option value="male">Male</option>
                                         <option value="female">Female</option>
                                         <option value="other">Other</option>
-                                        <option value="prefer_not_to_say">
+                                        <option value="unknown">
                                             Prefer not to say
                                         </option>
                                     </select>
