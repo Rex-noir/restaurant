@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthLayout from '@/Layouts/AuthLayout.vue';
-import { Head, router, usePage } from '@inertiajs/vue3';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import { gsap } from 'gsap';
 import { computed, nextTick, onMounted, ref, useTemplateRef } from 'vue';
 
@@ -188,7 +188,13 @@ onMounted(async () => {
 
             <p class="mt-4 text-center">
                 Don't have an account?
-                <a href="#" class="link link-accent">Sign up</a>
+                <Link
+                    replace
+                    :href="route('register')"
+                    class="link link-secondary"
+                >
+                    Register
+                </Link>
             </p>
         </div>
     </div>
