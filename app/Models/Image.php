@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Observers\ImageObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $imageable_type
@@ -29,6 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Image whereUpdatedAt($value)
  * @mixin \Eloquent
  */
+#[ObservedBy(ImageObserver::class)]
 class Image extends Model
 {
     /** @use HasFactory<\Database\Factories\ImageFactory> */
