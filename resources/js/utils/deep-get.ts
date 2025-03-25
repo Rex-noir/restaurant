@@ -1,11 +1,21 @@
-function deepGet(
-    obj: Record<string, any>,
-    path: string,
+// utils/deep-get.ts
+function deepGet<T>(
+    obj: T,
+    path: string, // Explicitly enforce string type
     defaultValue: any = undefined,
-) {
-    return path.split('.').reduce((acc, key) => {
-        return acc && key in acc ? acc[key] : defaultValue;
-    }, obj);
+): any {
+    if (typeof path !== 'string') {
+        return defaultValue;
+    }
+
+    return path.split('.').reduce(
+        (acc, key) => {
+            return acc && key in acc
+                ? acc[key as keyof typeof acc]
+                : defaultValue;
+        },
+        obj as Record<string, any>,
+    );
 }
 
 export default deepGet;
