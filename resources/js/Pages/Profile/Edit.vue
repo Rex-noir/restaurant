@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import InputGroup from '@/Components/input-group.vue';
 import ProfileImageUploader from '@/Components/profile-image-uploader.vue';
 import HomeLayout from '@/Layouts/HomeLayout.vue';
 import deepGet from '@/utils/deep-get';
@@ -157,131 +158,48 @@ defineOptions({
                         <!-- Profile details form -->
                         <div class="col-span-2">
                             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                <div class="form-field form-control w-full">
-                                    <label class="label">
-                                        <span class="label-text">Name</span>
-                                    </label>
-                                    <input
-                                        v-model="userForm.name"
-                                        type="text"
-                                        placeholder="Your name"
-                                        class="input w-full focus-within:outline-none"
-                                        :class="{
-                                            'input-error': userForm.errors.name,
-                                        }"
-                                    />
-                                    <label
-                                        v-if="userForm.errors.name"
-                                        class="label"
-                                    >
-                                        <span
-                                            class="label-text-alt text-error"
-                                            >{{ userForm.errors.name }}</span
-                                        >
-                                    </label>
-                                </div>
-                                <div class="form-field form-control w-full">
-                                    <label class="label">
-                                        <span class="label-text">Email</span>
-                                    </label>
-                                    <input
-                                        v-model="userForm.email"
-                                        type="email"
-                                        placeholder="Your email"
-                                        class="input w-full focus-within:outline-none"
-                                        :class="{
-                                            'input-error':
-                                                userForm.errors.email,
-                                        }"
-                                    />
-                                    <label
-                                        v-if="userForm.errors.email"
-                                        class="label"
-                                    >
-                                        <span
-                                            class="label-text-alt text-error"
-                                            >{{ userForm.errors.email }}</span
-                                        >
-                                    </label>
-                                </div>
-                                <div class="form-field form-control w-full">
-                                    <label class="label">
-                                        <span class="label-text">Phone</span>
-                                    </label>
-                                    <input
-                                        v-model="userForm.profile.phone"
-                                        type="tel"
-                                        placeholder="Your phone number"
-                                        class="input w-full focus-within:outline-none"
-                                        :class="{
-                                            'input-error': deepGet(
-                                                userForm.errors,
-                                                'profile.phone',
-                                                false,
-                                            ),
-                                        }"
-                                    />
-                                    <label
-                                        v-if="
-                                            deepGet(
-                                                userForm.errors,
-                                                'profile.phone',
-                                                false,
-                                            )
-                                        "
-                                        class="label"
-                                    >
-                                        <span class="label-text-alt text-error">
-                                            {{
-                                                deepGet(
-                                                    userForm.errors,
-                                                    'profile.phone',
-                                                    false,
-                                                )
-                                            }}
-                                        </span>
-                                    </label>
-                                </div>
-                                <div class="form-field form-control w-full">
-                                    <label class="label">
-                                        <span class="label-text"
-                                            >Date of Birth</span
-                                        >
-                                    </label>
-                                    <input
-                                        v-model="userForm.profile.date_of_birth"
-                                        type="date"
-                                        class="input w-full focus-within:outline-none"
-                                        :class="{
-                                            'input-error': deepGet(
-                                                userForm.errors,
-                                                'profile.date_of_birth',
-                                                false,
-                                            ),
-                                        }"
-                                    />
-                                    <label
-                                        v-if="
-                                            deepGet(
-                                                userForm.errors,
-                                                'profile.date_of_birth',
-                                                false,
-                                            )
-                                        "
-                                        class="label"
-                                    >
-                                        <span
-                                            class="label-text-alt text-error"
-                                            >{{
-                                                deepGet(
-                                                    userForm.errors,
-                                                    'profile.date_of_birth',
-                                                    false,
-                                                )
-                                            }}</span
-                                        >
-                                    </label>
-                                </div>
+                                <InputGroup
+                                    label="Name"
+                                    v-model:input-text="userForm.name"
+                                    :error="userForm.errors.name"
+                                    placeholder="Your name"
+                                />
+
+                                <InputGroup
+                                    label="Email"
+                                    v-model:input-text="userForm.email"
+                                    :error="userForm.errors.email"
+                                    placeholder="Email"
+                                />
+
+                                <InputGroup
+                                    label="Phone"
+                                    v-model:input-text="userForm.profile.phone"
+                                    input-type="tel"
+                                    :error="
+                                        deepGet(
+                                            userForm.errors,
+                                            'profile.phone',
+                                            '',
+                                        )
+                                    "
+                                    placeholder="Your phone number"
+                                />
+                                <InputGroup
+                                    label="Date of Birth"
+                                    v-model:input-text="
+                                        userForm.profile.date_of_birth
+                                    "
+                                    input-type="date"
+                                    :error="
+                                        deepGet(
+                                            userForm.errors,
+                                            'profile.date_of_birth',
+                                            '',
+                                        )
+                                    "
+                                />
+
                                 <div class="form-field form-control w-full">
                                     <label class="label">
                                         <span class="label-text">Gender</span>
@@ -380,84 +298,34 @@ defineOptions({
                         v-else
                         class="mx-auto grid max-w-lg grid-cols-1 gap-4 md:grid-cols-2"
                     >
-                        <div class="form-field form-control md:col-span-2">
-                            <label class="label">
-                                <span class="label-text">Current Password</span>
-                            </label>
-                            <input
-                                v-model="passwordForm.current_password"
-                                type="password"
-                                placeholder="Enter your current password"
-                                class="input w-full focus-within:outline-none"
-                                :class="{
-                                    'input-error':
-                                        passwordForm.errors.current_password,
-                                }"
-                            />
-                            <label
-                                v-if="passwordForm.errors.current_password"
-                                class="label"
-                            >
-                                <span class="label-text-alt text-error">{{
-                                    passwordForm.errors.current_password
-                                }}</span>
-                            </label>
-                        </div>
+                        <InputGroup
+                            class="col-span-2"
+                            label="Current Password"
+                            :error="passwordForm.errors.current_password"
+                            v-model:input-text="passwordForm.current_password"
+                            input-type="password"
+                            placeholder="Enter your current password"
+                        />
 
-                        <div class="form-field form-control">
-                            <label class="label">
-                                <span class="label-text">New Password</span>
-                            </label>
-                            <input
-                                v-model="passwordForm.new_password"
-                                type="password"
-                                placeholder="Enter new password"
-                                class="input w-full focus-within:outline-none"
-                                :class="{
-                                    'input-error':
-                                        passwordForm.errors.new_password,
-                                }"
-                            />
-                            <label
-                                v-if="passwordForm.errors.new_password"
-                                class="label"
-                            >
-                                <span class="label-text-alt text-error">{{
-                                    passwordForm.errors.new_password
-                                }}</span>
-                            </label>
-                        </div>
+                        <InputGroup
+                            label="New Password"
+                            :error="passwordForm.errors.new_password"
+                            v-model:input-text="passwordForm.new_password"
+                            input-type="password"
+                            placeholder="Enter your new password"
+                        />
 
-                        <div class="form-field form-control">
-                            <label class="label">
-                                <span class="label-text"
-                                    >Confirm New Password</span
-                                >
-                            </label>
-                            <input
-                                v-model="passwordForm.new_password_confirmation"
-                                type="password"
-                                placeholder="Confirm new password"
-                                class="input w-full focus-within:outline-none"
-                                :class="{
-                                    'input-error':
-                                        passwordForm.errors
-                                            .new_password_confirmation,
-                                }"
-                            />
-                            <label
-                                v-if="
-                                    passwordForm.errors
-                                        .new_password_confirmation
-                                "
-                                class="label"
-                            >
-                                <span class="label-text-alt text-error">{{
-                                    passwordForm.errors
-                                        .new_password_confirmation
-                                }}</span>
-                            </label>
-                        </div>
+                        <InputGroup
+                            label="New Password Confirmation"
+                            :error="
+                                passwordForm.errors.new_password_confirmation
+                            "
+                            v-model:input-text="
+                                passwordForm.new_password_confirmation
+                            "
+                            input-type="password"
+                            placeholder="Enter your new password again"
+                        />
 
                         <div
                             class="form-field mt-2 flex justify-center space-x-2 md:col-span-2"
