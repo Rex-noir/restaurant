@@ -36,14 +36,14 @@ class ProfileSetupController extends Controller
             'gender' => [Rule::enum(GenderEnums::class), 'required']
         ]);
 
-        $user = $request->user();
+        $user = auth()->user();
 
         $profile = $user->profile()->create($validated);
 
         if (isset($validated['image'])) {
             $image = $validated['image']->store('profile-images', 'public');
             if ($image) {
-                $user->profile->profile_image->updateOrCreate([
+                $user->profile->profile_image()->updateOrCreate([
                     'path' => $image,
                 ]);
             }
