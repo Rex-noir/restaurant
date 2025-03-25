@@ -160,13 +160,7 @@ defineOptions({
                     </h1>
                     <button
                         class="btn btn-sm btn-ghost btn-link"
-                        @click="
-                            router.post(
-                                route('logout'),
-                                {},
-                                { replace: true, fresh: true },
-                            )
-                        "
+                        @click="router.post(route('logout'))"
                     >
                         Log Out
                     </button>
