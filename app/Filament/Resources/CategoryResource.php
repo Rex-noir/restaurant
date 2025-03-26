@@ -60,7 +60,7 @@ class CategoryResource extends Resource
                 TextColumn::make('menu_items_count')
                     ->sortable()
                     ->label('Menu Items')
-                    ->counts('menuItems'),
+                    ->counts('menu_items'),
             ])
             ->filters([
                 //

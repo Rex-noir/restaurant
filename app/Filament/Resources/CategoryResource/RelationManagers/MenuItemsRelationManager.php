@@ -15,7 +15,7 @@ use Spatie\Tags\Tag;
 
 class MenuItemsRelationManager extends RelationManager
 {
-    protected static string $relationship = 'menuItems';
+    protected static string $relationship = 'menu_items';
 
     public function form(Form $form): Form
     {
