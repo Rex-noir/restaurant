@@ -14,49 +14,6 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Spatie\Tags\HasTags;
 
 #[ObservedBy(MenuItemObserver::class)]
-/**
- *
- *
- * @property int $id
- * @property int|null $category_id
- * @property string $name
- * @property string|null $description
- * @property float $price
- * @property bool $is_available
- * @property int|null $preparation_time
- * @property string $slug
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Category|null $category
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
- * @property-read int|null $images_count
- * @property-read \App\Models\Image|null $primary_image
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MenuItemReview> $reviews
- * @property-read int|null $reviews_count
- * @property \Illuminate\Database\Eloquent\Collection<int, \Spatie\Tags\Tag> $tags
- * @property-read int|null $tags_count
- * @method static \Database\Factories\MenuItemFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem query()
- * @method static \Illuminate\Database\Eloquent\Builder search(string|null $term = null, array $attributes = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem whereCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem whereIsAvailable($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem wherePreparationTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem wherePrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem withAllTags(\ArrayAccess|\Spatie\Tags\Tag|array|string $tags, ?string $type = null)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem withAllTagsOfAnyType($tags)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem withAnyTags(\ArrayAccess|\Spatie\Tags\Tag|array|string $tags, ?string $type = null)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem withAnyTagsOfAnyType($tags)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem withoutTags(\ArrayAccess|\Spatie\Tags\Tag|array|string $tags, ?string $type = null)
- * @mixin \Eloquent
- */
 class MenuItem extends Model
 {
     /** @use HasFactory<\Database\Factories\MenuItemFactory> */
