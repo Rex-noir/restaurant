@@ -147,13 +147,13 @@ onMounted(() => {
                         </Link>
                     </div>
                     <div class="hidden flex-none lg:block">
-                        <ul class="menu menu-horizontal">
+                        <ul class="menu menu-horizontal gap-1">
                             <template v-for="item in menuItems">
                                 <li v-if="item.visible" :key="item.label">
                                     <Link
                                         :href="route(item.name)"
                                         :class="{
-                                            'text-accent font-semibold':
+                                            'bg-primary text-primary-content font-semibold':
                                                 route().current() === item.name,
                                         }"
                                     >
