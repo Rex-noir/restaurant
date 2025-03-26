@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Spatie\Tags\HasTags;
@@ -56,6 +57,11 @@ class MenuItem extends Model
     public function images(): MorphMany
     {
         return $this->morphMany(Image::class, 'imageable')->chaperone();
+    }
+
+    public function options(): HasMany
+    {
+        return $this->hasMany(MenuItemOption::class);
     }
 
     public function getRelatedMenuItems(int $limit = 4)
