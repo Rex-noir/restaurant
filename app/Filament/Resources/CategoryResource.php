@@ -31,6 +31,7 @@ class CategoryResource extends Resource
                     ->columnSpanFull(),
 
                 FileUpload::make('image_path')
+                    ->label('Cover Image')
                     ->imageEditor()
                     ->disk('public')
                     ->previewable()
