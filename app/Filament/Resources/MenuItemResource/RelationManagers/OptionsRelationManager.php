@@ -26,7 +26,23 @@ class OptionsRelationManager extends RelationManager
                 Forms\Components\Select::make('type')
                     ->options(MenuOptionTypesEnum::class)
                     ->native(false)
-                    ->default(MenuOptionTypesEnum::CHECKBOX)
+                    ->default(MenuOptionTypesEnum::CHECKBOX),
+
+                Forms\Components\Repeater::make('values')
+                    ->relationship()
+                    ->columnSpanFull()
+                    ->grid(3)
+                    ->schema([
+                        Forms\Components\TextInput::make('value')
+                            ->required()
+                            ->label('Value Name'),
+
+                        Forms\Components\TextInput::make('price_mod')
+                            ->numeric()
+                            ->default(0)
+                            ->label('Price Modifier'),
+                    ])
+                    ->itemLabel(fn (array $state): ?string => ($state['value']) ?? null)
             ]);
     }
 
@@ -36,6 +52,11 @@ class OptionsRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('type'),
+                Tables\Columns\TextColumn::make('values_count')
+                    ->counts('values')
+                    ->alignCenter(),
+
             ])
             ->filters([
                 //
