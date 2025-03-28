@@ -12,6 +12,13 @@ class Category extends Model
 
     protected $fillable = ['name', 'description', 'image_path'];
 
+    public function casts()
+    {
+        return [
+            'is_active' => 'boolean',
+        ];
+    }
+
     public function menu_items()
     {
         return $this->hasMany(MenuItem::class);
