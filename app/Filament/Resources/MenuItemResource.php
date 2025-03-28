@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\MenuItemResource\Pages;
 use App\Filament\Resources\MenuItemResource\RelationManagers;
+use App\Filament\Resources\MenuItemResource\RelationManagers\OptionsRelationManager;
 use App\Models\MenuItem;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -74,7 +75,7 @@ class MenuItemResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            OptionsRelationManager::class
         ];
     }
 
