@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CategoryResource\Pages;
-use App\Filament\Resources\CategoryResource\RelationManagers\MenuItemsRelationManager;
 use App\Models\Category;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
@@ -74,7 +73,7 @@ class CategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            MenuItemsRelationManager::class
+            //
         ];
     }
 
