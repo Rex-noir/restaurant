@@ -20,6 +20,7 @@ class MenuItemOptionFactory extends Factory
         return [
             'name' => fake()->word(),
             'type' => fake()->randomElement(collect(MenuOptionTypesEnum::cases())->pluck('value')->all()),
+            'menu_item_id' => MenuItemFactory::new()
         ];
     }
 }
