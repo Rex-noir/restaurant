@@ -42,6 +42,7 @@ class OptionsRelationManager extends RelationManager
                             ->default(0)
                             ->label('Price Modifier'),
                     ])
+                    ->defaultItems(3)
                     ->itemLabel(fn (array $state): ?string => ($state['value']) ?? null)
             ]);
     }
