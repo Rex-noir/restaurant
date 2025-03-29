@@ -20,6 +20,15 @@ declare namespace App.Data {
         tags?: Array<App.Data.TagData>;
         images?: Array<App.Data.ImageData>;
     };
+    export type MenuItemOptionData = {
+        name: string;
+        type: App.enums.MenuOptionTypesEnum;
+        values?: Array<App.Data.MenuItemOptionValueData>;
+    };
+    export type MenuItemOptionValueData = {
+        value: string;
+        price_mod: number;
+    };
     export type MenuItemReviewData = {
         user_id: number;
         id: number;
@@ -50,6 +59,11 @@ declare namespace App.enums {
         'Female' = 'female',
         'Other' = 'other',
         'Unknown' = 'unknown',
+    }
+    export enum MenuOptionTypesEnum {
+        'SELECT' = 'select',
+        'CHECKBOX' = 'checkbox',
+        'RADIO' = 'radio',
     }
     export enum OrderStatusEnum {
         'Pending' = 'pending',
