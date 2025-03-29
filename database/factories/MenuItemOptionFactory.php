@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\enums\MenuOptionTypesEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,8 @@ class MenuItemOptionFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->word(),
+            'type' => fake()->randomElement(collect(MenuOptionTypesEnum::cases())->pluck('value')->all()),
         ];
     }
 }
