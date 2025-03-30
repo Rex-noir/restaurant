@@ -22,6 +22,7 @@ declare namespace App.Data {
         options?: Array<App.Data.MenuItemOptionData>;
     };
     export type MenuItemOptionData = {
+        id: number;
         name: string;
         type: App.enums.MenuOptionTypesEnum;
         values?: Array<App.Data.MenuItemOptionValueData>;
@@ -29,6 +30,8 @@ declare namespace App.Data {
     export type MenuItemOptionValueData = {
         value: string;
         price_mod: number;
+        is_default: boolean;
+        id: number;
     };
     export type MenuItemReviewData = {
         user_id: number;
