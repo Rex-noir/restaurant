@@ -3,9 +3,10 @@ import MenuItem from '@/Components/menu-item.vue';
 import OptionCheckbox from '@/Components/option-checkbox.vue';
 import OptionRadio from '@/Components/option-radio.vue';
 import OptionSelect from '@/Components/option-select.vue';
+import ProduceGallery from '@/Components/produce-gallery.vue';
+import ReviewForm from '@/Components/review-form.vue';
 import HomeLayout from '@/Layouts/HomeLayout.vue';
 import { PageProps, PaginatedResponse } from '@/types';
-import deepDiff from '@/utils/object-diff';
 import { ArrowLeftIcon } from '@heroicons/vue/24/outline';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 import gsap from 'gsap';
@@ -24,25 +25,7 @@ const relatedItems = computed(() => page.props.related_items);
 const user = computed(() => page.props.auth.user);
 const reviews = computed(() => page.props.reviews);
 
-const reviewForm = useForm<Omit<App.Data.MenuItemReviewData, 'user_id' | 'id'>>(
-    {
-        stars: 0,
-        review_text: '',
-    },
-);
-
-const initialFormData = {
-    stars: 0,
-    review_text: '',
-};
-
-const uniqueId = Math.random().toString(36).substring(2, 15);
-const totalStars = 5;
 const reviewsContainer = ref(null);
-
-const setRating = (rating: number) => {
-    reviewForm.stars = rating;
-};
 
 const orderForm = useForm({
     quantity: 1,
@@ -55,36 +38,6 @@ const orderForm = useForm({
         };
     }),
 });
-
-const onSubmitReview = async () => {
-    reviewForm
-        .transform((data) => deepDiff(initialFormData, data as any))
-        .post(route('menus.reviews.store', { menu: item.value.id }), {
-            preserveScroll: true,
-            only: ['reviews'],
-            onSuccess: () => {
-                // Animate the new review being added
-                if (reviews.value.data.length > 0) {
-                    setTimeout(() => {
-                        const newReview = document.querySelector(
-                            '.review-card:last-child',
-                        );
-                        if (newReview) {
-                            gsap.fromTo(
-                                newReview,
-                                { opacity: 0, y: -20 },
-                                { opacity: 1, y: 0, duration: 0.5 },
-                            );
-                        }
-                    }, 100);
-                }
-
-                // Clear form
-                reviewForm.stars = 0;
-                reviewForm.review_text = '';
-            },
-        });
-};
 
 // GSAP animations
 onMounted(() => {
@@ -120,14 +73,16 @@ onMounted(() => {
 
     // Animate review cards
     const reviewCards = document.querySelectorAll('.review-card');
-    gsap.from(reviewCards, {
-        opacity: 0,
-        y: 20,
-        stagger: 0.1,
-        duration: 0.5,
-        ease: 'power1.out',
-        delay: 0.3,
-    });
+    if (reviewCards.values.length > 0) {
+        gsap.from(reviewCards, {
+            opacity: 0,
+            y: 20,
+            stagger: 0.1,
+            duration: 0.5,
+            ease: 'power1.out',
+            delay: 0.3,
+        });
+    }
 });
 
 defineOptions({
@@ -253,20 +208,7 @@ defineOptions({
 
         <!-- Product gallery -->
         <div class="my-12" v-if="item.images && item.images.length">
-            <h2 class="mb-4 text-lg font-medium">Gallery</h2>
-            <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                <div
-                    v-for="image in item.images"
-                    :key="image.url"
-                    class="gallery-image bg-base-100 aspect-square overflow-hidden rounded-lg shadow-sm"
-                >
-                    <img
-                        :src="image.url"
-                        class="h-full w-full object-cover transition hover:scale-105"
-                        :alt="item.name"
-                    />
-                </div>
-            </div>
+            <ProduceGallery :images="item.images" />
         </div>
 
         <!-- Related items -->
@@ -285,63 +227,12 @@ defineOptions({
         <div class="my-12">
             <h2 class="mb-4 text-xl font-medium">Customer Reviews</h2>
 
-            <!-- Review form for logged in users -->
-            <form @submit.prevent="onSubmitReview" v-if="user" class="mb-8">
-                <div class="card bg-base-100 shadow-sm">
-                    <div class="card-body">
-                        <textarea
-                            class="textarea textarea-bordered w-full resize-none focus-within:outline-0"
-                            :class="{
-                                'textarea-error': reviewForm.errors.review_text,
-                            }"
-                            placeholder="Share your experience..."
-                            v-model="reviewForm.review_text"
-                            rows="3"
-                        ></textarea>
-                        <div
-                            class="flex flex-wrap items-center justify-between gap-4"
-                        >
-                            <div class="rating rating-md">
-                                <input
-                                    type="radio"
-                                    :name="`rating-${uniqueId}`"
-                                    class="rating-hidden"
-                                    aria-label="clear"
-                                    :checked="reviewForm.stars === 0"
-                                    @click="setRating(0)"
-                                />
-                                <input
-                                    v-for="i in totalStars"
-                                    :key="i"
-                                    type="radio"
-                                    :name="`rating-${uniqueId}`"
-                                    class="mask mask-star-2 bg-primary"
-                                    :aria-label="`${i} star${i > 1 ? 's' : ''}`"
-                                    :checked="reviewForm.stars === i"
-                                    @click="setRating(i)"
-                                />
-                            </div>
-                            <span
-                                v-if="
-                                    reviewForm.errors.stars ||
-                                    reviewForm.errors.review_text
-                                "
-                                class="text-error-content font-bold"
-                                >{{
-                                    reviewForm.errors.stars ||
-                                    reviewForm.errors.review_text
-                                }}</span
-                            >
-                            <button
-                                type="submit"
-                                class="btn btn-primary btn-sm"
-                            >
-                                Submit Review
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </form>
+            <ReviewForm
+                v-if="user"
+                :item="item"
+                :reviews="reviews"
+                :user="user"
+            />
 
             <!-- Login reminder for guests -->
             <div v-else class="card bg-base-200 mb-8 p-6 text-center">
@@ -423,7 +314,7 @@ defineOptions({
                                     <div class="mb-2 flex items-center">
                                         <div class="rating rating-sm">
                                             <input
-                                                v-for="i in totalStars"
+                                                v-for="i in 5"
                                                 :key="i"
                                                 type="radio"
                                                 :name="`rating-readonly-${review.id}`"
