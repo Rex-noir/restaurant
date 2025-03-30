@@ -38,7 +38,7 @@ const toggleValue = (valueId: number) => {
                         v-if="value.price_mod"
                         class="ml-2 text-xs text-gray-500"
                     >
-                        +{{ value.price_mod }}
+                        + ${{ value.price_mod }}
                     </span>
                 </div>
                 <div

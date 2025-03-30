@@ -21,7 +21,7 @@ const model = defineModel<(number | null)[]>('value', { required: true });
                     :value="value.id"
                     class="text-sm"
                 >
-                    {{ value.value }}
+                    {{ value.value }} +${{ value.price_mod }}
                 </option>
             </select>
             <div

@@ -27,9 +27,9 @@ const model = defineModel<(number | null)[]>('value', { required: true });
                         :value="value.id"
                         v-model="model[0]"
                     />
-                    <span class="label-text ml-2 text-sm">{{
-                        value.value
-                    }}</span>
+                    <span class="label-text ml-2 text-sm">
+                        {{ value.value }} +${{ value.price_mod }}
+                    </span>
                 </label>
             </template>
         </div>
