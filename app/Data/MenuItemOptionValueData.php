@@ -10,6 +10,7 @@ class MenuItemOptionValueData extends Data
     public function __construct(
         public string $value,
         public float $price_mod,
+        public bool $is_default,
     ) {
     }
 }

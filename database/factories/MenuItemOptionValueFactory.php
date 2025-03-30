@@ -19,7 +19,8 @@ class MenuItemOptionValueFactory extends Factory
         return [
             'menu_item_option_id' => MenuItemOptionFactory::new(),
             'value' => fake()->word(),
-            'price_mod' => fake()->randomFloat(2, 0, 100)
+            'price_mod' => fake()->randomFloat(2, 0, 100),
+            'is_default' => fake()->boolean()
         ];
     }
 }

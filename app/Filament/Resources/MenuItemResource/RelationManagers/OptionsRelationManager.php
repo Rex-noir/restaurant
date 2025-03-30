@@ -4,7 +4,11 @@ namespace App\Filament\Resources\MenuItemResource\RelationManagers;
 
 use App\enums\MenuOptionTypesEnum;
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -39,8 +43,26 @@ class OptionsRelationManager extends RelationManager
 
                         Forms\Components\TextInput::make('price_mod')
                             ->numeric()
+                            ->prefix('INR')
                             ->default(0)
                             ->label('Price Modifier'),
+
+                        Forms\Components\Toggle::make('is_default')
+                            ->label('Default')
+                            ->reactive()
+                            ->afterStateUpdated(function ($state, Forms\Components\Toggle $component, Set $set, Get $get) {
+                                if ($state) {
+                                    $items = $get('../');
+
+                                    foreach ($items as $key => $item) {
+                                        if ($item['is_default']) {
+                                            $set("../$key.is_default", false);
+                                        }
+                                    }
+
+                                    $set('is_default', true);
+                                }
+                            }),
                     ])
                     ->defaultItems(3)
                     ->itemLabel(fn (array $state): ?string => ($state['value']) ?? null)

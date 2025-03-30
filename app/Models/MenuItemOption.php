@@ -14,7 +14,7 @@ class MenuItemOption extends Model
     protected $fillable = [
         'name',
         'type',
-        'menu_item_id'
+        'menu_item_id',
     ];
 
     public function casts(): array

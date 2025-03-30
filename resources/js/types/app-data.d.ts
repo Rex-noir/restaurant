@@ -19,6 +19,7 @@ declare namespace App.Data {
         primary_image: App.Data.ImageData;
         tags?: Array<App.Data.TagData>;
         images?: Array<App.Data.ImageData>;
+        options?: Array<App.Data.MenuItemOptionData>;
     };
     export type MenuItemOptionData = {
         name: string;

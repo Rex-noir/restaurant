@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(MenuItemOption::class)->constrained()->cascadeOnDelete();
             $table->string('value');
             $table->decimal('price_mod', 8, 2)->default(0.00);
+            $table->boolean('is_default')->default(false);
             $table->timestamps();
         });
     }

@@ -36,11 +36,11 @@ class MenuItemController extends Controller
 
     public function show(string $slug)
     {
-        $menu_item = MenuItem::with(['tags', 'primary_image', 'images'])->where('slug', $slug)->firstOrFail();
+        $menu_item = MenuItem::with(['tags', 'primary_image', 'images', 'options.values'])->where('slug', $slug)->firstOrFail();
 
         $related_items = $menu_item->getRelatedMenuItems();
 
-        $reviews = $menu_item->reviews()->with('user.profile.profile_image')->paginate(12);
+        $reviews = $menu_item->reviews()->with(['user.profile.profile_image'])->paginate(12);
 
         return inertia('Home/MenuItemPage', [
             'menu_item' => fn () => MenuItemData::from($menu_item),

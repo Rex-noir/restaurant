@@ -13,8 +13,16 @@ class MenuItemOptionValue extends Model
     protected $fillable = [
         'menu_item_option_id',
         'value',
-        'price_mod'
+        'price_mod',
+        'is_default'
     ];
+
+    public function casts()
+    {
+        return [
+            'is_default' => 'boolean'
+        ];
+    }
 
     public function option()
     {
