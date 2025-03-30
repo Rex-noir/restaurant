@@ -11,6 +11,7 @@ class MenuItemOptionValueData extends Data
         public string $value,
         public float $price_mod,
         public bool $is_default,
+        public int $id,
     ) {
     }
 }

@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import MenuItem from '@/Components/menu-item.vue';
+import OptionCheckbox from '@/Components/option-checkbox.vue';
+import OptionRadio from '@/Components/option-radio.vue';
+import OptionSelect from '@/Components/option-select.vue';
 import HomeLayout from '@/Layouts/HomeLayout.vue';
 import { PageProps, PaginatedResponse } from '@/types';
 import deepDiff from '@/utils/object-diff';
@@ -35,14 +38,25 @@ const initialFormData = {
 
 const uniqueId = Math.random().toString(36).substring(2, 15);
 const totalStars = 5;
-const quantity = ref(1);
 const reviewsContainer = ref(null);
 
 const setRating = (rating: number) => {
     reviewForm.stars = rating;
 };
 
-const onSubmitReiview = async () => {
+const orderForm = useForm({
+    quantity: 1,
+    options: item.value.options?.map((option) => {
+        return {
+            id: option.id,
+            value: [
+                option.values?.find((value) => value.is_default)?.id ?? null,
+            ],
+        };
+    }),
+});
+
+const onSubmitReview = async () => {
     reviewForm
         .transform((data) => deepDiff(initialFormData, data as any))
         .post(route('menus.reviews.store', { menu: item.value.id }), {
@@ -135,10 +149,10 @@ defineOptions({
         <div class="grid gap-8 lg:grid-cols-2">
             <!-- Main image -->
             <div
-                class="main-image bg-base-100 overflow-hidden rounded-lg shadow-md"
+                class="main-image bg-base-100 flex items-center overflow-hidden rounded-lg shadow-md"
             >
                 <img
-                    class="h-auto w-full object-cover"
+                    class="h-full w-full object-cover object-center"
                     :src="item.primary_image.url"
                     alt="Main Image"
                 />
@@ -157,20 +171,44 @@ defineOptions({
                     </div>
                 </div>
 
-                <!-- Description -->
-                <p class="text-base-content/80">{{ item.description }}</p>
-
                 <!-- Price and preparation time -->
                 <div class="flex flex-wrap items-center gap-4">
-                    <span class="text-2xl font-medium">${{ item.price }}</span>
+                    <span class="text-2xl font-medium">$ {{ item.price }}</span>
                     <span class="badge" v-if="item.preparation_time">
                         {{ item.preparation_time }} min prep time
                     </span>
                 </div>
 
+                <!-- Description -->
+                <p class="text-base-content/80">{{ item.description }}</p>
+
                 <!-- Note -->
                 <div class="text-base-content/70 text-sm">
                     Note: Online ordering available only in Aizawl City
+                </div>
+
+                <div v-if="orderForm.options" class="flex flex-col gap-4">
+                    <template
+                        v-for="(option, index) in item.options"
+                        :key="option.id"
+                    >
+                        <OptionSelect
+                            v-if="option.type === 'select'"
+                            :option="option"
+                            v-model:value="orderForm.options[index].value"
+                        />
+                        <OptionRadio
+                            v-if="option.type === 'radio'"
+                            :option="option"
+                            v-model:value="orderForm.options[index].value"
+                        />
+
+                        <OptionCheckbox
+                            v-if="option.type === 'checkbox'"
+                            :option="option"
+                            v-model:value="orderForm.options[index].value"
+                        />
+                    </template>
                 </div>
 
                 <!-- Add to cart -->
@@ -178,27 +216,36 @@ defineOptions({
                     <div class="join">
                         <button
                             class="btn btn-sm join-item"
-                            @click="quantity > 1 ? quantity-- : null"
+                            @click="
+                                orderForm.quantity > 1
+                                    ? orderForm.quantity--
+                                    : null
+                            "
                         >
                             -
                         </button>
                         <input
                             type="number"
-                            v-model.number="quantity"
+                            v-model.number="orderForm.quantity"
                             disabled
                             class="input input-sm join-item w-16 appearance-none text-center !ring focus-within:outline-none disabled:cursor-text"
                             min="1"
                         />
                         <button
                             class="btn btn-sm join-item"
-                            @click="quantity++"
+                            @click="orderForm.quantity++"
                         >
                             +
                         </button>
                     </div>
                     <div class="flex gap-2">
                         <button class="btn btn-primary">Add to Cart</button>
-                        <button class="btn btn-outline">Checkout</button>
+                        <button
+                            @click="console.log(orderForm.data())"
+                            class="btn btn-outline"
+                        >
+                            Checkout
+                        </button>
                     </div>
                 </div>
             </div>
@@ -239,7 +286,7 @@ defineOptions({
             <h2 class="mb-4 text-xl font-medium">Customer Reviews</h2>
 
             <!-- Review form for logged in users -->
-            <form @submit.prevent="onSubmitReiview" v-if="user" class="mb-8">
+            <form @submit.prevent="onSubmitReview" v-if="user" class="mb-8">
                 <div class="card bg-base-100 shadow-sm">
                     <div class="card-body">
                         <textarea

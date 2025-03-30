@@ -23,4 +23,31 @@ class MenuItemOptionFactory extends Factory
             'menu_item_id' => MenuItemFactory::new()
         ];
     }
+
+    public function selectType()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'type' => MenuOptionTypesEnum::SELECT->value
+            ];
+        });
+    }
+
+    public function radioType()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'type' => MenuOptionTypesEnum::RADIO->value
+            ];
+        });
+    }
+
+    public function checkboxType()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'type' => MenuOptionTypesEnum::CHECKBOX->value
+            ];
+        });
+    }
 }
