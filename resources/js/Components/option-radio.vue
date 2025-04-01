@@ -13,7 +13,7 @@ const model = defineModel<(number | null)[]>('value', { required: true });
                 option.name
             }}</span>
         </label>
-        <div class="join join-horizontal gap-1.5">
+        <div class="join join-horizontal flex-wrap gap-1.5">
             <template v-for="value in option.values" :key="value.id">
                 <label
                     class="join-item label hover:border-primary cursor-pointer rounded-lg border px-3 py-1.5 transition-all"
