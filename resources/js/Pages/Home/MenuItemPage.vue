@@ -38,6 +38,30 @@ const orderForm = useForm({
     }),
 });
 
+const onSubmit = () => {
+    // TODO: Submit order form
+
+    console.log(orderForm.data());
+    console.log(
+        orderForm
+            .transform((data) => ({
+                items: [
+                    {
+                        quantity: data.quantity,
+                        options: data.options?.map((option) => {
+                            return {
+                                id: option.id,
+                                value: option.value,
+                            };
+                        }),
+                        menu_item_id: item.value.id,
+                    },
+                ],
+            }))
+            .post(route('menus.checkout.store')),
+    );
+};
+
 // GSAP animations
 onMounted(() => {
     // Animate product details
@@ -141,7 +165,7 @@ defineOptions({
                     Note: Online ordering available only in Aizawl City
                 </div>
 
-                <div v-if="orderForm.options" class="flex flex-col gap-4">
+                <div v-if="orderForm.options" class="flex flex-col gap-1">
                     <template
                         v-for="(option, index) in item.options"
                         :key="option.id"
@@ -151,6 +175,7 @@ defineOptions({
                             :option="option"
                             v-model:value="orderForm.options[index].value"
                         />
+
                         <OptionRadio
                             v-if="option.type === 'radio'"
                             :option="option"
@@ -194,10 +219,7 @@ defineOptions({
                     </div>
                     <div class="flex gap-2">
                         <button class="btn btn-primary">Add to Cart</button>
-                        <button
-                            @click="console.log(orderForm.data())"
-                            class="btn btn-outline"
-                        >
+                        <button @click="onSubmit" class="btn btn-outline">
                             Checkout
                         </button>
                     </div>
