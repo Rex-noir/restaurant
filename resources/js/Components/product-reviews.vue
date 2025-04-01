@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { PaginatedResponse } from '@/types';
+import { Link } from '@inertiajs/vue3';
 
 const props = defineProps<{
     reviews: PaginatedResponse<App.Data.MenuItemReviewData>;
