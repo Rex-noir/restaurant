@@ -32,7 +32,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Category whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class Category extends \Eloquent {}
 }
@@ -48,7 +47,7 @@ namespace App\Models{
  * @property int $order
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read Model|\Eloquent $imageable
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $imageable
  * @method static \Database\Factories\ImageFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Image newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Image newQuery()
@@ -60,7 +59,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Image whereOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Image wherePath($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Image whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class Image extends \Eloquent {}
 }
@@ -82,6 +80,8 @@ namespace App\Models{
  * @property-read \App\Models\Category|null $category
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
  * @property-read int|null $images_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MenuItemOption> $options
+ * @property-read int|null $options_count
  * @property-read \App\Models\Image|null $primary_image
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MenuItemReview> $reviews
  * @property-read int|null $reviews_count
@@ -91,7 +91,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem query()
- * @method static \Illuminate\Database\Eloquent\Builder search(string|null $term = null, array $attributes = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem search(...$arguments)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem whereCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem whereDescription($value)
@@ -106,11 +106,64 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem withAllTagsOfAnyType($tags)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem withAnyTags(\ArrayAccess|\Spatie\Tags\Tag|array|string $tags, ?string $type = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem withAnyTagsOfAnyType($tags)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem withoutTags(\ArrayAccess|\Spatie\Tags\Tag|array|string $tags, ?string $type = null)
- * @mixin \Eloquent
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem withAnyTagsOfType(array|string $type)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItem withoutTags(\ArrayAccess|\Spatie\Tags\Tag|array|string $tags, ?string $type = null)
  */
 	class MenuItem extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $menu_item_id
+ * @property string $name
+ * @property \App\enums\MenuOptionTypesEnum $type
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\MenuItem $menu_item
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MenuItemOptionValue> $values
+ * @property-read int|null $values_count
+ * @method static \Database\Factories\MenuItemOptionFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemOption newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemOption newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemOption query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemOption whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemOption whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemOption whereMenuItemId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemOption whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemOption whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemOption whereUpdatedAt($value)
+ */
+	class MenuItemOption extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $menu_item_option_id
+ * @property string $value
+ * @property string $price_mod
+ * @property bool $is_default
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\MenuItemOption|null $option
+ * @method static \Database\Factories\MenuItemOptionValueFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemOptionValue newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemOptionValue newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemOptionValue query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemOptionValue whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemOptionValue whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemOptionValue whereIsDefault($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemOptionValue whereMenuItemOptionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemOptionValue wherePriceMod($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemOptionValue whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemOptionValue whereValue($value)
+ */
+	class MenuItemOptionValue extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -137,7 +190,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemReview whereStars($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemReview whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MenuItemReview whereUserId($value)
- * @mixin \Eloquent
  */
 	class MenuItemReview extends \Eloquent {}
 }
@@ -148,11 +200,11 @@ namespace App\Models{
  *
  * @property int $id
  * @property int|null $user_id
- * @property OrderTypesEnum $order_type
- * @property OrderStatusEnum $status
+ * @property \App\enums\OrderTypesEnum $order_type
+ * @property \App\enums\OrderStatusEnum $status
  * @property float $total_amount
- * @property PaymentStatusEnum $payment_status
- * @property PaymentMethodsEnum $payment_method
+ * @property \App\enums\PaymentStatusEnum $payment_status
+ * @property \App\enums\PaymentMethodsEnum $payment_method
  * @property string|null $notes
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -173,7 +225,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Order whereTotalAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Order whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Order whereUserId($value)
- * @mixin \Eloquent
  */
 	class Order extends \Eloquent {}
 }
@@ -204,7 +255,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OrderItem whereSpecialInstructions($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OrderItem whereUnitPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OrderItem whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class OrderItem extends \Eloquent {}
 }
@@ -217,7 +267,7 @@ namespace App\Models{
  * @property int|null $user_id
  * @property int|null $table_id
  * @property int $party_size
- * @property ReservationStatusEnum $status
+ * @property \App\enums\ReservationStatusEnum $status
  * @property string $date
  * @property string|null $special_requests
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -237,7 +287,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereTableId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Reservation whereUserId($value)
- * @mixin \Eloquent
  */
 	class Reservation extends \Eloquent {}
 }
@@ -264,7 +313,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Table whereNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Table whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Table whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class Table extends \Eloquent {}
 }
@@ -311,7 +359,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutPermission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutRole($roles, $guard = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutTrashed()
- * @mixin \Eloquent
  */
 	class User extends \Eloquent implements \Filament\Models\Contracts\FilamentUser {}
 }
@@ -323,10 +370,11 @@ namespace App\Models{
  * @property int $id
  * @property int $user_id
  * @property string|null $date_of_birth
- * @property GenderEnums $gender
+ * @property \App\enums\GenderEnums $gender
  * @property string $phone
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Image|null $profile_image
  * @property-read \App\Models\User $user
  * @method static \Database\Factories\UserProfileFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserProfile newModelQuery()
@@ -339,8 +387,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserProfile wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserProfile whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserProfile whereUserId($value)
- * @mixin \Eloquent
- * @property-read \App\Models\Image|null $profile_image
  */
 	class UserProfile extends \Eloquent {}
 }
