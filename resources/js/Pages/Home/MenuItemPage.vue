@@ -29,6 +29,7 @@ const reviews = computed(() => page.props.reviews);
 const orderForm = useForm({
     quantity: 1,
     options: item.value.options?.map((option) => {
+        console.log(option);
         return {
             id: option.id,
             value: [

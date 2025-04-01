@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import HomeLayout from '@/Layouts/HomeLayout.vue';
+import env from '@/utils/env';
 import { Link } from '@inertiajs/vue3';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
@@ -126,7 +127,7 @@ onMounted(() => {
                     class="hero-content flex flex-col justify-center space-y-6"
                 >
                     <h1 class="text-primary font-serif text-4xl font-bold">
-                        The Restaurant Experience
+                        {{ env('APP_NAME') }}
                     </h1>
                     <p class="text-base-content/80 text-lg">
                         A cozy haven where flavor meets tradition. Since 2003,
@@ -140,7 +141,7 @@ onMounted(() => {
                             :href="route('menus.index')"
                             class="btn btn-outline"
                         >
-                            View Menus or Order Directly Online
+                            Browse Menu
                         </Link>
                     </div>
                 </div>
