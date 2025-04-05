@@ -57,6 +57,10 @@
     }
 }
 
+:focus-within {
+    @apply outline-none;
+}
+
 @plugin "daisyui/theme" {
     name: 'light';
     default: false;

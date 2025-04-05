@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import env from '@/utils/env';
 import { Head, Link, usePage } from '@inertiajs/vue3';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
@@ -102,7 +103,7 @@ onMounted(() => {
 
 <template>
     <Head>
-        <title>The Restaurant Experience</title>
+        <title>{{ env('APP_NAME') }}</title>
         <meta
             name="description"
             content="A cozy haven where flavor meets tradition since 2003"
@@ -141,9 +142,9 @@ onMounted(() => {
                     <div class="mx-2 flex-1 px-2">
                         <Link
                             href="/"
-                            class="text-primary hover:text-primary-focus font-serif text-2xl font-bold transition-colors"
+                            class="text-primary hover:text-primary-focus font-serif text-xl font-bold transition-colors md:text-2xl"
                         >
-                            The Restaurant Experience
+                            {{ env('APP_NAME') }}
                         </Link>
                     </div>
                     <div class="hidden flex-none lg:block">

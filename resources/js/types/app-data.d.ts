@@ -4,6 +4,17 @@ declare namespace App.Data {
         description: string | null;
         image: string | null;
     };
+    export type CheckoutData = {
+        quantity: number;
+        total: number;
+        menu_item: App.Data.MenuItemData;
+        options: Array<App.Data.CheckoutOption>;
+    };
+    export type CheckoutOption = {
+        option: App.Data.MenuItemOptionData;
+        selected_values: Array<App.Data.MenuItemOptionValueData>;
+        total: number;
+    };
     export type ImageData = {
         url: string;
         order: number;

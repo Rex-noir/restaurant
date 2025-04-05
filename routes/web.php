@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\MenuItemReviewController;
 use App\Http\Controllers\ProfileController;
@@ -19,4 +20,6 @@ Route::get('/menus', [MenuItemController::class, 'index'])->name('menus.index');
 Route::get('/menus/{slug}', [MenuItemController::class, 'show'])->name('menus.show');
 Route::apiResource('menus.reviews', MenuItemReviewController::class)->only(['index', 'store']);
 
+Route::get('/menus/checkout/{key}', [CheckoutController::class, "show"])->name('menus.checkout.show');
+Route::post('/menus/checkout', [CheckoutController::class, "store"])->name('menus.checkout.store');
 require __DIR__.'/auth.php';

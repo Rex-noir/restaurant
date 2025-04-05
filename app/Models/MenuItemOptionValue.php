@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\MoneyCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,7 +21,8 @@ class MenuItemOptionValue extends Model
     public function casts()
     {
         return [
-            'is_default' => 'boolean'
+            'is_default' => 'boolean',
+            'price_mod' => MoneyCast::class
         ];
     }
 
