@@ -1,6 +1,7 @@
 # A simple restaurant website built with Larvel + Inertia (Vue)
 
-# The payment gateways and order with checkouts are work in progress.
+##### The payment gateways and order with checkouts are work in progress.
+
 
 ![Home Page](docs/homepage.png) Home
 
