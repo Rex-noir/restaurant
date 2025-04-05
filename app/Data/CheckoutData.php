@@ -15,7 +15,7 @@ class CheckoutData extends Data
         public int $quantity,
         public float $total,
         public MenuItemData $menu_item,
-        /** @var array<CheckoutOption> */
+        /** @var Collection<int,CheckoutOption> */
         public Collection $options,
     ) {
         //
@@ -70,7 +70,7 @@ class CheckoutOption extends Data
 {
     public function __construct(
         public MenuItemOptionData $option,
-        #[DataCollectionOf(MenuItemOptionValueData::class)]
+        /** @var Collection<int,MenuItemOptionValueData> */
         public Collection $selected_values,
         public int $total,
     ) {

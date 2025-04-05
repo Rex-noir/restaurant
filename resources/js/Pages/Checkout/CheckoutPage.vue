@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import CheckoutLayout from '@/Layouts/CheckoutLayout.vue';
 import { PageProps } from '@/types';
-import { usePage } from '@inertiajs/vue3';
+import { router, usePage } from '@inertiajs/vue3';
 import gsap from 'gsap';
 import { onMounted, ref } from 'vue';
 
-const pageProps =
-    usePage<PageProps<{ checkout_data: App.Data.CheckoutData[] }>>().props;
+const pageProps = usePage<
+    PageProps<{
+        checkout_data: App.Data.CheckoutData[];
+        signature_key: string;
+    }>
+>().props;
 const checkoutData = pageProps.checkout_data;
+const signatureKey = pageProps.signature_key;
 const itemRefs = ref<HTMLElement[]>([]);
 const paymentSection = ref(null);
 
@@ -36,6 +41,19 @@ onMounted(() => {
 
 const setItemRef = (el: any) => {
     if (el) itemRefs.value.push(el);
+};
+
+const payOrder = () => {
+    // Implement payment logic here
+    router.post(
+        route('menus.order.store', { key: signatureKey }),
+        {},
+        {
+            onSuccess: (response) => {
+                console.log(response);
+            },
+        },
+    );
 };
 </script>
 
@@ -166,7 +184,10 @@ const setItemRef = (el: any) => {
                     </div>
 
                     <div class="mt-8">
-                        <button class="btn btn-primary btn-lg w-full">
+                        <button
+                            @click="payOrder"
+                            class="btn btn-primary btn-lg w-full"
+                        >
                             Pay
                         </button>
                     </div>

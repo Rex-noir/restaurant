@@ -35,6 +35,8 @@ class CheckoutController extends Controller
 
         return inertia('Checkout/CheckoutPage', [
             'checkout_data' => CheckoutData::fromArray($data),
+            'signature_key' => $key,
         ]);
     }
+
 }

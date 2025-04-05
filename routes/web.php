@@ -3,6 +3,7 @@
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\MenuItemReviewController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfileSetupController;
 use Illuminate\Support\Facades\Route;
@@ -22,4 +23,5 @@ Route::apiResource('menus.reviews', MenuItemReviewController::class)->only(['ind
 
 Route::get('/menus/checkout/{key}', [CheckoutController::class, "show"])->name('menus.checkout.show');
 Route::post('/menus/checkout', [CheckoutController::class, "store"])->name('menus.checkout.store');
+Route::post('/menus/order/{key}', [OrderController::class, "store"])->name('menus.order.store');
 require __DIR__.'/auth.php';
